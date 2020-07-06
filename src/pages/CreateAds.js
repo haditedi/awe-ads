@@ -38,7 +38,7 @@ const CreateAds = (props) => {
                   },
                 ]}
               >
-                <Input onChange={handleChange} value={form.title} />
+                <Input />
               </Form.Item>
               <Form.Item
                 name="description"
@@ -50,10 +50,7 @@ const CreateAds = (props) => {
                   },
                 ]}
               >
-                <Input.TextArea
-                  onChange={handleChange}
-                  value={form.description}
-                />
+                <Input.TextArea />
               </Form.Item>
               <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 6 }}>
                 <Button type="primary" htmlType="submit">
