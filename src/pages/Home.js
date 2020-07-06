@@ -1,6 +1,6 @@
 import React from "react";
 import Display from "../components/Display";
-import { motion } from "framer-motion";
+//import { motion } from "framer-motion";
 import couple from "../images/couple.svg";
 import { Row, Col } from "antd";
 import AdsSummary from "../components/ads/AdsSummary";

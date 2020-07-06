@@ -1,27 +1,61 @@
-import axios from "axios";
-
 export const signIn = (credentials) => {
-  return (dispatch, getState) => {
-    axios
-      .post("https://dazzling-zion-41313.herokuapp.com/", credentials)
+  return (dispatch, getState, { getFirebase }) => {
+    const firebase = getFirebase();
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(credentials.email, credentials.password)
       .then(() => {
-        console.log("success");
-        dispatch({ type: "SIGN_IN", payload: credentials });
+        dispatch({
+          type: "LOGIN_SUCCESS",
+        });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        dispatch({
+          type: "LOGIN_ERROR",
+          err,
+        });
+      });
   };
 };
 
 export const signUp = (credentials) => {
-  return (dispatch, getState) => {
-    axios
-      .post("https://dazzling-zion-41313.herokuapp.com/users", credentials)
-      .then(() => {
-        console.log("sign up success");
-        dispatch({ type: "SIGN_UP", payload: credentials });
-      })
-      .catch((err) => {
-        console.log(err);
+  return async (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firebase = getFirebase();
+    const firestore = getFirestore();
+
+    try {
+      const result = await firebase
+        .auth()
+        .createUserWithEmailAndPassword(
+          credentials.email,
+          credentials.password
+        );
+
+      result.user.updateProfile({
+        displayName: credentials.name,
       });
+
+      const database = await firestore
+        .collection("users")
+        .doc(result.user.uid)
+        .set({
+          name: credentials.name,
+          email: credentials.email,
+        });
+      console.log(database);
+      console.log("sign up success");
+      dispatch({ type: "SIGN_UP_SUCCESS" });
+    } catch (err) {
+      console.log(err);
+      dispatch({ type: "SIGN_UP_ERROR", err });
+    }
+  };
+};
+
+export const signOut = () => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firebase = getFirebase();
+    firebase.auth().signOut();
+    console.log("Log out");
   };
 };

@@ -1,14 +1,19 @@
 import React from "react";
 import { Form, Input, Button } from "antd";
 import { MailOutlined, LockOutlined } from "@ant-design/icons";
+import { signIn } from "../store/actions/authActions";
+import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 
-const SignIn = ({ handleClick }) => {
+const SignIn = ({ authError, login, isAuth, handleClick }) => {
   const onFinish = (values) => {
+    login(values);
     console.log("Received values of form: ", values);
   };
 
   return (
     <Form name="normal_login" className="login-form" onFinish={onFinish}>
+      {isAuth && <Redirect to="/" />}
       <Form.Item>
         <h1>Login</h1>
       </Form.Item>
@@ -47,6 +52,7 @@ const SignIn = ({ handleClick }) => {
           here
         </Button>
       </Form.Item>
+      {authError && <p style={{ color: "red" }}>{authError}</p>}
       <Form.Item>
         <Button type="primary" htmlType="submit" className="login-form-button">
           Log in
@@ -56,4 +62,18 @@ const SignIn = ({ handleClick }) => {
   );
 };
 
-export default SignIn;
+const mapStateToProps = (state) => {
+  console.log(state);
+  return {
+    authError: state.auth.authError,
+    isAuth: state.firebase.auth.uid,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    login: (credentials) => dispatch(signIn(credentials)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

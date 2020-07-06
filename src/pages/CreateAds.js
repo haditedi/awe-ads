@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Form, Input, Button } from "antd";
 import { Row, Col } from "antd";
 import Display from "../components/Display";
@@ -7,7 +7,7 @@ import { createAds } from "../store/actions/adsActions";
 
 const layout = {
   labelCol: {
-    span: 4,
+    span: 6,
   },
   wrapperCol: {
     span: 16,
@@ -15,24 +15,9 @@ const layout = {
 };
 
 const CreateAds = (props) => {
-  const [form, setForm] = useState({
-    title: "",
-    description: "",
-  });
-
-  const handleChange = (e) => {
-    const { id, value } = e.target;
-    
-    setForm((prevValue) => {
-      return {
-        ...prevValue,
-        [id]: value,
-      };
-    });
-  };
-
   const onFinish = (e) => {
-    props.create(form);
+    console.log(e);
+    //props.create(form);
   };
   return (
     <Display>
@@ -70,7 +55,7 @@ const CreateAds = (props) => {
                   value={form.description}
                 />
               </Form.Item>
-              <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>
+              <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 6 }}>
                 <Button type="primary" htmlType="submit">
                   Submit
                 </Button>
