@@ -1,5 +1,6 @@
 const initState = {
   authError: null,
+  name:""
 };
 
 const authReducer = (state = initState, action) => {
@@ -19,6 +20,7 @@ const authReducer = (state = initState, action) => {
       return {
         ...state,
         authError: null,
+        name: action.name
       };
 
     case "SIGN_UP_ERROR":
@@ -26,6 +28,8 @@ const authReducer = (state = initState, action) => {
         ...state,
         authError: action.err.message,
       };
+    case "SIGN_OUT":
+      return initState;
     default:
       return state;
   }

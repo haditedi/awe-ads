@@ -1,16 +1,19 @@
 import axios from "axios";
 
-export const createAds = (ads) => {
-  return (dispatch, getState) => {
-    console.log(ads);
-    axios
-      .post("https://dazzling-zion-41313.herokuapp.com/", ads)
-      .then((resp) => {
-        console.log("success");
-        dispatch({ type: "CREATE_ADS", payload: ads });
-      })
-      .catch((err) => {
-        console.log(err);
+export const postAds = (ads) => {
+  return async (dispatch, getState, { getFirebase }) => {
+    const firebase = getFirebase();
+    let token = await firebase.auth().currentUser.getIdToken(true)
+    
+    try {
+      const result = await axios.post("http://localhost:5000/post-ads", ads, {
+        headers: { authorization: `${token}` },
       });
+      console.log(result);
+      dispatch({ type: "POST_ADS" });
+    } catch (err) {
+      console.log(err);
+      dispatch({ type: "POST_ERROR", err });
+    }
   };
 };

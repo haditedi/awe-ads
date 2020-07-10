@@ -3,7 +3,7 @@ import { Form, Input, Button } from "antd";
 import { Row, Col } from "antd";
 import Display from "../components/Display";
 import { connect } from "react-redux";
-import { createAds } from "../store/actions/adsActions";
+import { postAds } from "../store/actions/adsActions";
 
 const layout = {
   labelCol: {
@@ -14,19 +14,21 @@ const layout = {
   },
 };
 
-const CreateAds = (props) => {
+const PostAds = (props) => {
+  
   const onFinish = (e) => {
-    console.log(e);
-    //props.create(form);
+    //console.log({ ...e, userId: props.userId });
+    props.postAds(e);
+    props.history.push("/profile");
   };
   return (
     <Display>
-      <section>
-        <Row justify="center">
+      <section style={{ marginTop: "15vh" }}>
+        <Row justify="center" align="bottom">
           <Col xs={24} sm={16}>
             <Form {...layout} onFinish={onFinish}>
               <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>
-                <h1 style={{ marginBottom: "0" }}>Create Ads</h1>
+                <h1 style={{ marginBottom: "0" }}>Post Ads</h1>
               </Form.Item>
               <Form.Item
                 label="Title"
@@ -65,10 +67,11 @@ const CreateAds = (props) => {
   );
 };
 
+
 const mapDispatchToProps = (dispatch) => {
   return {
-    create: (form) => dispatch(createAds(form)),
+    postAds: (form) => dispatch(postAds(form)),
   };
 };
 
-export default connect(null, mapDispatchToProps)(CreateAds);
+export default connect(null, mapDispatchToProps)(PostAds);

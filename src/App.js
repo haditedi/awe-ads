@@ -4,8 +4,10 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Account from "./pages/Account";
-import CreateAds from "./pages/CreateAds";
+import PostAds from "./pages/PostAds";
+import Profile from "./pages/Profile";
 import { connect } from "react-redux";
+import NotFound from "./pages/NotFound"
 
 function App(props) {
   let routes;
@@ -14,8 +16,13 @@ function App(props) {
       <Switch>
         <Route path="/about" component={About} />
         <Route path="/contact" component={Contact} />
-        <Route path="/create-ads" component={CreateAds} />
-        <Route path="/" component={Home} />
+        <Route path="/post-ads" component={PostAds} />
+        <Route path="/profile" component={Profile} />
+        {/* <Route path="/view-ads" component={ViewAds} />
+        <Route path="/update-ads" component={UpdateAds} />
+        <Route path="/delete-ads" component={DeleteAds} /> */}
+        <Route path="/" exact component={Home} />
+        <Route path="/" component={NotFound} />
       </Switch>
     );
   } else {
@@ -24,7 +31,8 @@ function App(props) {
         <Route path="/about" component={About} />
         <Route path="/contact" component={Contact} />
         <Route path="/account" component={Account} />
-        <Route path="/" component={Home} />
+        <Route path="/" exact component={Home} />
+         <Route path="/" component={NotFound} />
       </Switch>
     );
   }

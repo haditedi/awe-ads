@@ -3,15 +3,30 @@ import { NavLink, withRouter } from "react-router-dom";
 import { Layout, Menu } from "antd";
 import { connect } from "react-redux";
 import { signOut } from "../store/actions/authActions";
-const { Header, Content, Footer } = Layout;
+import {
+  DownCircleOutlined,
+  MenuUnfoldOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
+import { Avatar } from "antd";
 
-const Display = ({ children, location, isAuth, logout }) => {
+const { Header, Content, Footer } = Layout;
+const { SubMenu } = Menu;
+
+const Display = ({ children, location, history, isAuth, logout, name }) => {
+
+  const handleLogout = () => {
+    logout(history);
+   
+  }
   let routes;
   if (isAuth) {
     routes = (
       <Menu
+        triggerSubMenuAction="click"
         theme="dark"
         mode="horizontal"
+        overflowedIndicator={<MenuUnfoldOutlined />}
         defaultSelectedKeys={["/"]}
         selectedKeys={[location.pathname]}
       >
@@ -27,18 +42,25 @@ const Display = ({ children, location, isAuth, logout }) => {
           <NavLink to="/contact">Contact</NavLink>
         </Menu.Item>
 
-        <Menu.Item key="/create-ads">
-          <NavLink to="/create-ads">Create Ads</NavLink>
+
+        <Menu.Item key="/profile">
+          <NavLink to="/profile">
+            <Avatar style={{ marginRight: "5px" }} icon={<UserOutlined />} />{" "}
+            <span style={{ textTransform: "capitalize" }}>{name}</span>
+          </NavLink>
         </Menu.Item>
+
         <Menu.Item key="/logout">
-          <NavLink onClick={logout} to="/logout">
+          <NavLink onClick={handleLogout} to="/">
             Log Out
           </NavLink>
         </Menu.Item>
       </Menu>
+      
     );
   } else {
     routes = (
+      
       <Menu
         theme="dark"
         mode="horizontal"
@@ -57,16 +79,14 @@ const Display = ({ children, location, isAuth, logout }) => {
           <NavLink to="/contact">Contact</NavLink>
         </Menu.Item>
         <Menu.Item key="/account">
-          <NavLink to="/account">Account</NavLink>
+          <NavLink to="/account">Login/Sign Up</NavLink>
         </Menu.Item>
       </Menu>
     );
   }
   return (
-    <Layout style={{ minHeight: "100vh" }}>
+    <Layout className="layout" style={{ minHeight: "100vh" }}>
       <Header style={{ position: "fixed", zIndex: 1, width: "100%" }}>
-        <div className="logo" />
-
         {routes}
       </Header>
       <Content
@@ -86,13 +106,15 @@ const Display = ({ children, location, isAuth, logout }) => {
 };
 
 const mapStateToProps = (state) => {
+  
   return {
     isAuth: state.firebase.auth.uid,
+    name: state.auth.name || state.firebase.auth.displayName,
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    logout: () => dispatch(signOut()),
+    logout: (history) => dispatch(signOut(history)),
   };
 };
 
