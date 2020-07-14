@@ -3,22 +3,16 @@ import { NavLink, withRouter } from "react-router-dom";
 import { Layout, Menu } from "antd";
 import { connect } from "react-redux";
 import { signOut } from "../store/actions/authActions";
-import {
-  DownCircleOutlined,
-  MenuUnfoldOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
+import { MenuUnfoldOutlined, UserOutlined } from "@ant-design/icons";
 import { Avatar } from "antd";
+import brand from "../images/aw-ads.svg";
 
 const { Header, Content, Footer } = Layout;
-const { SubMenu } = Menu;
 
 const Display = ({ children, location, history, isAuth, logout, name }) => {
-
   const handleLogout = () => {
     logout(history);
-   
-  }
+  };
   let routes;
   if (isAuth) {
     routes = (
@@ -30,6 +24,13 @@ const Display = ({ children, location, history, isAuth, logout, name }) => {
         defaultSelectedKeys={["/"]}
         selectedKeys={[location.pathname]}
       >
+        <Menu.Item>
+          <img
+            style={{ width: "50px", display: "inline" }}
+            src={brand}
+            alt="brand"
+          />
+        </Menu.Item>
         <Menu.Item key="/">
           {" "}
           <NavLink to="/">Home </NavLink>
@@ -41,7 +42,6 @@ const Display = ({ children, location, history, isAuth, logout, name }) => {
         <Menu.Item key="/contact">
           <NavLink to="/contact">Contact</NavLink>
         </Menu.Item>
-
 
         <Menu.Item key="/profile">
           <NavLink to="/profile">
@@ -56,17 +56,26 @@ const Display = ({ children, location, history, isAuth, logout, name }) => {
           </NavLink>
         </Menu.Item>
       </Menu>
-      
     );
   } else {
     routes = (
-      
       <Menu
         theme="dark"
         mode="horizontal"
         defaultSelectedKeys={["/"]}
         selectedKeys={[location.pathname]}
       >
+        <Menu.Item>
+          <img
+            style={{
+              width: "50px",
+              display: "inline",
+              textTransform: "rotate(22deg)",
+            }}
+            src={brand}
+            alt="brand"
+          />
+        </Menu.Item>
         <Menu.Item key="/">
           {" "}
           <NavLink to="/">Home </NavLink>
@@ -106,7 +115,6 @@ const Display = ({ children, location, history, isAuth, logout, name }) => {
 };
 
 const mapStateToProps = (state) => {
-  
   return {
     isAuth: state.firebase.auth.uid,
     name: state.auth.name || state.firebase.auth.displayName,

@@ -3,17 +3,39 @@ import axios from "axios";
 export const postAds = (ads) => {
   return async (dispatch, getState, { getFirebase }) => {
     const firebase = getFirebase();
-    let token = await firebase.auth().currentUser.getIdToken(true)
-    
-    try {
-      const result = await axios.post("http://localhost:5000/post-ads", ads, {
-        headers: { authorization: `${token}` },
-      });
-      console.log(result);
-      dispatch({ type: "POST_ADS" });
-    } catch (err) {
-      console.log(err);
-      dispatch({ type: "POST_ERROR", err });
-    }
+    let token = await firebase.auth().currentUser.getIdToken(true);
+
+    const uploadTask = firebase
+      .storage()
+      .ref(`images/${ads.image.name}`)
+      .put(ads.image);
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log("Upload is " + progress + "% done");
+      },
+      (err) => dispatch({ type: "IMAGE_UPLOAD_ERROR", err }),
+      () => {
+        uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+          dispatch({ type: "IMAGE_UPLOAD_SUCCESS", payload: downloadURL });
+          axios
+            .post(
+              "https://dazzling-zion-41313.herokuapp.com/post-ads",
+              { ...ads, imageUrl: downloadURL },
+              {
+                headers: { authorization: `${token}` },
+              }
+            )
+            .then(() => {
+              dispatch({ type: "POST_ADS", payload: ads.title });
+            })
+            .catch((err) => {
+              console.log(err);
+              dispatch({ type: "POST_ERROR", err });
+            });
+        });
+      }
+    );
   };
 };

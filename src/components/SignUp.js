@@ -1,111 +1,118 @@
-import React, {useState} from "react";
-import { Form, Input, Button } from "antd";
-import { Spin } from 'antd';
+import React, { useState } from "react";
+import { Input, Button } from "antd";
 import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { signUp } from "../store/actions/authActions";
-import { withRouter } from "react-router"
+import { withRouter } from "react-router";
+import { Row, Col } from "antd";
 
-const SignUp = (props) => {
-  
-  const [state, setState] = useState({loading:false})
+const style = {
+  marginBottom: "20px",
+};
 
-  const onFinish = async (values) => {
-    setState({loading:true})
-    await props.create(values).then(() => {     
-      return props.history.push("/profile")
-    }).catch(err => {
-      console.log(err)
-      setState({loading:false})
-    })
-   
-    console.log("Received values of form: ", values);
+const SignUp = ({ handleClick, create, authError, history }) => {
+  const [state, setState] = useState({
+    name: "",
+    email: "",
+    password: "",
+    loading: false,
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setState((prevState) => {
+      return {
+        ...prevState,
+        [name]: value,
+      };
+    });
   };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setState((prevState) => {
+      return {
+        ...prevState,
+        loading: true,
+      };
+    });
+    create(state, history);
+    setState((prevState) => {
+      return {
+        ...prevState,
+        loading: false,
+      };
+    });
+  };
+
   return (
-    <Form name="normal_login" className="login-form" onFinish={onFinish}>
-      <Form.Item>
-        <h1>Sign Up</h1>
-      </Form.Item>
-      <Form.Item 
-        name="name"
-        rules={[
-          {
-            required: true,
-            message: "Please input your name!",
-          },
-        ]}
-      >
-        <Input 
-          prefix={<UserOutlined style={{paddingRight:"5px"}} className="site-form-item-icon" /> }
-          placeholder="Name"
-        />
-      </Form.Item>
-      <Form.Item
-        name="email"
-        rules={[
-          {
-            required: true,
-            message: "Please input your email!",
-          },
-        ]}
-      >
-        <Input
-          prefix={<MailOutlined style={{paddingRight:"5px"}} className="site-form-item-icon" />}
-          placeholder="Email"
-        />
-      </Form.Item>
-      <Form.Item
-        name="password"
-        rules={[
-          {
-            required: true,
-            message: "Please input your Password!",
-          },
-        ]}
-      >
-        <Input
-          prefix={<LockOutlined style={{paddingRight:"5px"}} className="site-form-item-icon" />}
-          type="password"
-          placeholder="Password"
-        />
-      </Form.Item>
-      <Form.Item>
-        Already have an account? Sign in{" "}
-        <Button style={{ marginLeft: "5px" }} onClick={props.handleClick}>
-          here
-        </Button>
-      </Form.Item>
-      {props.auth.authError && (
-        <Form.Item>
-          <p style={{ color: "red" }}>{props.auth.authError}</p>
-        </Form.Item>
-      )}
-      <Form.Item>
-      {state.loading ? <Spin size="large" /> :
-        <Button
-          animate={{ scale: 2 }}
-          type="primary"
-          htmlType="submit"
-          className="login-form-button"
-        >
-          Sign Up
-        </Button> }
-      </Form.Item>
-    </Form>
+    <Row justify="center">
+      <Col xs={24} sm={18} lg={16} xl={14}>
+        <form onSubmit={handleSubmit}>
+          <h1>Sign Up</h1>
+          <Input
+            type="text"
+            style={style}
+            prefix={<UserOutlined style={{ paddingRight: "5px" }} />}
+            placeholder="Name"
+            name="name"
+            required
+            value={state.name}
+            onChange={handleChange}
+          />
+          <Input
+            type="email"
+            style={style}
+            prefix={<MailOutlined style={{ paddingRight: "5px" }} />}
+            placeholder="Email"
+            name="email"
+            required
+            value={state.email}
+            onChange={handleChange}
+          />
+
+          <Input
+            type="password"
+            style={style}
+            prefix={<LockOutlined style={{ paddingRight: "5px" }} />}
+            placeholder="Password"
+            name="password"
+            required
+            value={state.password}
+            onChange={handleChange}
+          />
+          <div style={style}>
+            Already have an account? Sign In{" "}
+            <Button style={{ marginLeft: "5px" }} onClick={handleClick}>
+              here
+            </Button>
+          </div>
+
+          {authError && <p style={{ color: "red" }}>{authError}</p>}
+
+          {state.loading ? (
+            <Button loading="true">Sign Up</Button>
+          ) : (
+            <Button type="primary" htmlType="submit">
+              Sign Up
+            </Button>
+          )}
+        </form>
+      </Col>
+    </Row>
   );
 };
 
 const mapStateToProps = (state) => {
   console.log(state);
   return {
-    auth: state.auth,
-    isAuth: state.firebase.auth.displayName,
+    authError: state.auth.authError,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    create: (credentials) => dispatch(signUp(credentials)),
+    create: (credentials, history) => dispatch(signUp(credentials, history)),
   };
 };
 
