@@ -5,12 +5,18 @@ import { signIn } from "../store/actions/authActions";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { Row, Col } from "antd";
+import ErrorAlert from "./ErrorAlert";
 
 const style = {
-  marginBottom: "20px",
+  bottom: {
+    marginBottom: "20px",
+  },
+  top: {
+    marginTop: "20px",
+  },
 };
 
-const SignIn = ({ authError, login, isAuth, handleClick, history }) => {
+const SignIn = ({ authError, login, handleClick, history }) => {
   const [state, setState] = useState({
     email: "",
     password: "",
@@ -51,7 +57,7 @@ const SignIn = ({ authError, login, isAuth, handleClick, history }) => {
           <h1>Login</h1>
           <Input
             type="email"
-            style={style}
+            style={style.bottom}
             prefix={<MailOutlined style={{ paddingRight: "5px" }} />}
             placeholder="Email"
             name="email"
@@ -62,7 +68,7 @@ const SignIn = ({ authError, login, isAuth, handleClick, history }) => {
 
           <Input
             type="password"
-            style={style}
+            style={style.bottom}
             prefix={<LockOutlined style={{ paddingRight: "5px" }} />}
             placeholder="Password"
             name="password"
@@ -70,19 +76,21 @@ const SignIn = ({ authError, login, isAuth, handleClick, history }) => {
             value={state.password}
             onChange={handleChange}
           />
-          <div style={style}>
+          <div style={style.bottom}>
             Don't have an account? Sign up{" "}
             <Button style={{ marginLeft: "5px" }} onClick={handleClick}>
               here
             </Button>
           </div>
 
-          {authError && <p style={{ color: "red" }}>{authError}</p>}
+          <ErrorAlert error={authError} />
 
           {state.loading ? (
-            <Button loading="true">Log in</Button>
+            <Button style={style.top} loading="true">
+              Log in
+            </Button>
           ) : (
-            <Button type="primary" htmlType="submit">
+            <Button style={style.top} type="primary" htmlType="submit">
               Log in
             </Button>
           )}
@@ -93,7 +101,6 @@ const SignIn = ({ authError, login, isAuth, handleClick, history }) => {
 };
 
 const mapStateToProps = (state) => {
-  console.log(state);
   return {
     authError: state.auth.authError,
   };

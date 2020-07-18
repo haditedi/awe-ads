@@ -4,6 +4,7 @@ import { Row, Col } from "antd";
 import { connect } from "react-redux";
 import { postAds } from "../../store/actions/adsActions";
 import { Redirect } from "react-router-dom";
+import ErrorAlert from "../ErrorAlert";
 
 const { TextArea } = Input;
 const style = {
@@ -14,10 +15,10 @@ const PostAds = (props) => {
   const [state, setState] = useState({
     title: "",
     description: "",
-    tmpUrl: "",
+    tmpUrl: [],
     image: "",
-    alt: "",
     loading: false,
+    error: "",
   });
 
   const handleChange = (e) => {
@@ -31,17 +32,40 @@ const PostAds = (props) => {
   };
 
   const handleFiles = (e) => {
-    let file = e.target.files[0].name;
-    file = file.split(".");
+    let files = Array.from(e.target.files);
 
-    const objectUrl = URL.createObjectURL(e.target.files[0]);
+    let objectUrl = [];
+    let images = files.map((el) => {
+      if (el.size > 2000000) {
+        setState((prevState) => {
+          return {
+            ...prevState,
+            error: "file too big. Max size is 2 mb / image.",
+          };
+        });
+        clearError();
+        return console.log("file too big");
+      }
+
+      if (el.type !== "image/png" && el.type !== "image/jpg") {
+        setState((prevState) => {
+          return {
+            ...prevState,
+            error: `${el.name} type not supported. Only support .jpg and .png`,
+          };
+        });
+        return clearError();
+      }
+      objectUrl.push(URL.createObjectURL(el));
+      let alt = el.name.split(".")[0];
+      return { name: el.name, size: el.size, type: el.type, alt };
+    });
 
     setState((prevState) => {
       return {
         ...prevState,
         tmpUrl: objectUrl,
-        image: e.target.files[0],
-        alt: file[0],
+        image: images,
       };
     });
   };
@@ -65,6 +89,18 @@ const PostAds = (props) => {
         });
       })
       .catch((err) => console.log(err));
+  };
+  console.log(state);
+
+  const clearError = () => {
+    setTimeout(() => {
+      setState((prevState) => {
+        return {
+          ...prevState,
+          error: "",
+        };
+      });
+    }, 3000);
   };
 
   return (
@@ -90,12 +126,22 @@ const PostAds = (props) => {
               onChange={handleChange}
               required
             />
+            <span>
+              Use "Ctrl + Click" to select multiple images. Max 3 images with
+              less than 2 mb each.
+            </span>
             <Input type="file" name="files" multiple onChange={handleFiles} />
 
-            {state.tmpUrl && (
-              <div style={{ marginTop: "10px", display: "block" }}>
-                <img src={state.tmpUrl} alt="preview" />
-              </div>
+            {state.tmpUrl &&
+              state.tmpUrl.map((el) => {
+                return (
+                  <div key={el} style={{ marginTop: "10px", display: "block" }}>
+                    <img src={el} alt="preview" />
+                  </div>
+                );
+              })}
+            {state.error && (
+              <ErrorAlert style={{ marginTop: "20px" }} error={state.error} />
             )}
             {state.loading ? (
               <Button

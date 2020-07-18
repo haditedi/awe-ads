@@ -109,7 +109,16 @@ const Display = ({ children, location, history, isAuth, logout, name }) => {
           {children}
         </div>
       </Content>
-      <Footer style={{ textAlign: "center" }}>made by Hadi Tedi</Footer>
+      <Footer style={{ textAlign: "center" }}>
+        made by{" "}
+        <a
+          href="https://www.it-tedi.tech"
+          target="_blank"
+          rel="noreferrer noopener"
+        >
+          Hadi Tedi
+        </a>
+      </Footer>
     </Layout>
   );
 };

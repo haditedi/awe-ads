@@ -21,7 +21,7 @@ export const postAds = (ads) => {
           dispatch({ type: "IMAGE_UPLOAD_SUCCESS", payload: downloadURL });
           axios
             .post(
-              "https://dazzling-zion-41313.herokuapp.com/post-ads",
+              "/post-ads",
               { ...ads, imageUrl: downloadURL },
               {
                 headers: { authorization: `${token}` },

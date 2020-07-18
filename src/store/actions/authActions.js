@@ -19,6 +19,9 @@ export const signIn = (credentials, history) => {
           type: "LOGIN_ERROR",
           err,
         });
+        setTimeout(() => {
+          dispatch({ type: "CLEAR_ERROR" });
+        }, 3000);
       });
   };
 };
@@ -34,13 +37,12 @@ export const signUp = (credentials, history) => {
         .createUserWithEmailAndPassword(credentials.email, credentials.password)
         .then((resp) => {
           response = resp;
-          console.log(resp);
           resp.user.updateProfile({
             displayName: credentials.name,
           });
         })
         .then(() => {
-          axios.post("https://dazzling-zion-41313.herokuapp.com/sign-up", {
+          axios.post("/sign-up", {
             name: credentials.name,
             email: credentials.email,
             userId: response.user.uid,
@@ -51,8 +53,10 @@ export const signUp = (credentials, history) => {
           history.push("/profile");
         });
     } catch (err) {
-      console.log(err);
       dispatch({ type: "SIGN_UP_ERROR", err });
+      setTimeout(() => {
+        dispatch({ type: "CLEAR_ERROR" });
+      }, 3000);
     }
   };
 };

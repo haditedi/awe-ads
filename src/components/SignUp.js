@@ -1,13 +1,18 @@
 import React, { useState } from "react";
-import { Input, Button } from "antd";
+import { Input, Button, Row, Col } from "antd";
 import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { signUp } from "../store/actions/authActions";
 import { withRouter } from "react-router";
-import { Row, Col } from "antd";
+import ErrorAlert from "./ErrorAlert";
 
 const style = {
-  marginBottom: "20px",
+  bottom: {
+    marginBottom: "20px",
+  },
+  top: {
+    marginTop: "20px",
+  },
 };
 
 const SignUp = ({ handleClick, create, authError, history }) => {
@@ -52,7 +57,7 @@ const SignUp = ({ handleClick, create, authError, history }) => {
           <h1>Sign Up</h1>
           <Input
             type="text"
-            style={style}
+            style={style.bottom}
             prefix={<UserOutlined style={{ paddingRight: "5px" }} />}
             placeholder="Name"
             name="name"
@@ -62,7 +67,7 @@ const SignUp = ({ handleClick, create, authError, history }) => {
           />
           <Input
             type="email"
-            style={style}
+            style={style.bottom}
             prefix={<MailOutlined style={{ paddingRight: "5px" }} />}
             placeholder="Email"
             name="email"
@@ -73,7 +78,7 @@ const SignUp = ({ handleClick, create, authError, history }) => {
 
           <Input
             type="password"
-            style={style}
+            style={style.bottom}
             prefix={<LockOutlined style={{ paddingRight: "5px" }} />}
             placeholder="Password"
             name="password"
@@ -81,19 +86,21 @@ const SignUp = ({ handleClick, create, authError, history }) => {
             value={state.password}
             onChange={handleChange}
           />
-          <div style={style}>
+          <div style={style.bottom}>
             Already have an account? Sign In{" "}
             <Button style={{ marginLeft: "5px" }} onClick={handleClick}>
               here
             </Button>
           </div>
 
-          {authError && <p style={{ color: "red" }}>{authError}</p>}
+          <ErrorAlert error={authError} />
 
           {state.loading ? (
-            <Button loading="true">Sign Up</Button>
+            <Button style={style.top} loading="true">
+              Sign Up
+            </Button>
           ) : (
-            <Button type="primary" htmlType="submit">
+            <Button style={style.top} type="primary" htmlType="submit">
               Sign Up
             </Button>
           )}

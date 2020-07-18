@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import SignIn from "./SignIn";
 import { Row, Col } from "antd";
-import classes from "./users.module.css";
 import SignUp from "./SignUp";
 
 const Users = () => {
@@ -12,7 +11,7 @@ const Users = () => {
   };
   return (
     <Row style={{ marginTop: "15vh" }} justify="center">
-      <Col className={classes.tilt}>
+      <Col className="tilt">
         {show ? (
           <SignUp handleClick={handleClick} />
         ) : (

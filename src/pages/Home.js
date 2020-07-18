@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import Display from "../components/Display";
+
 import { motion } from "framer-motion";
 import awAds from "../images/aw-ads.svg";
 import couple from "../images/couple.svg";
 import { Row, Col } from "antd";
 import AdsSummary from "../components/ads/AdsSummary";
+import Display from "../components/Display";
+import HeadingText from "../components/HeadingText";
 import axios from "axios";
 import classes from "./home.module.css";
 
@@ -42,14 +44,7 @@ const Home = () => {
           </Col>
         </Row>
       </section>
-      <section style={{ marginTop: "20px" }}>
-        <Row>
-          <Col>
-            <h1>For Sale</h1>
-          </Col>
-        </Row>
-      </section>
-
+      <HeadingText text="For Sale" />
       <AdsSummary state={state} />
     </Display>
   );
