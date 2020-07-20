@@ -44,13 +44,11 @@ export const postAds = (ads) => {
     }
     getData(ads)
       .then(() => {
-        return firebase.auth().currentUser.getIdToken(true);
+        //return firebase.auth().currentUser.getIdToken(true);
       })
       .then((token) => {
         console.log(token);
-        axios.post("/post-ads", data, {
-          headers: { authorization: `${token}` },
-        });
+        axios.post("/post-ads", data);
       })
       .then((resp) => {
         console.log("ADS POSTED", resp);
@@ -62,3 +60,7 @@ export const postAds = (ads) => {
       });
   };
 };
+
+// {
+//   headers: { authorization: `${token}` },
+// }

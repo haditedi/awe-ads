@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -8,16 +8,20 @@ import Profile from "./pages/Profile";
 import { connect } from "react-redux";
 import NotFound from "./pages/NotFound";
 import firebase from "./config/fbConfig";
+import axios from "axios";
 
 function App(props) {
-  let token;
+  const [token, setToken] = useState();
   firebase
     .auth()
     .currentUser.getIdToken(true)
     .then((res) => {
-      token = res;
-      console.log(token);
+      setToken(res);
     });
+
+  console.log(token);
+  axios.defaults.baseURL = "http://localhost:5000";
+  axios.defaults.headers.common["Authorization"] = token;
 
   let routes;
   if (props.isAuth) {
