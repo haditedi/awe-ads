@@ -12,19 +12,22 @@ import classes from "./home.module.css";
 
 const Home = () => {
   const [state, setState] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     axios
-      .get("https://dazzling-zion-41313.herokuapp.com/get-ads")
+      .get("/get-ads")
       .then((res) => {
         const doc = res.data;
 
         doc.data.result.forEach((el) => {
           setState((prevValue) => [...prevValue, el]);
         });
+        setLoading(false);
       })
       .catch((err) => console.log(err));
   }, []);
+  console.log(state);
   return (
     <Display>
       <section>
@@ -45,7 +48,7 @@ const Home = () => {
         </Row>
       </section>
       <HeadingText text="For Sale" />
-      <AdsSummary state={state} />
+      <AdsSummary state={state} loading={loading} />
     </Display>
   );
 };

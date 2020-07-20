@@ -1,17 +1,19 @@
 import React, { useState } from "react";
-import { Input, Button } from "antd";
-import { Row, Col } from "antd";
+import { Input, Button, Row, Col, Select } from "antd";
 import { connect } from "react-redux";
 import { postAds } from "../../store/actions/adsActions";
 import { Redirect } from "react-router-dom";
 import ErrorAlert from "../ErrorAlert";
+import { useHistory } from "react-router-dom";
 
 const { TextArea } = Input;
+const { Option } = Select;
 const style = {
   marginBottom: "20px",
 };
 
 const PostAds = (props) => {
+  const history = useHistory();
   const [state, setState] = useState({
     title: "",
     description: "",
@@ -19,6 +21,9 @@ const PostAds = (props) => {
     image: "",
     loading: false,
     error: "",
+    category: "",
+    price: "",
+    location: "",
   });
 
   const handleChange = (e) => {
@@ -30,13 +35,22 @@ const PostAds = (props) => {
       };
     });
   };
+  const handleCategory = (e) => {
+    setState((prevState) => {
+      return {
+        ...prevState,
+        category: e,
+      };
+    });
+  };
 
   const handleFiles = (e) => {
     let files = Array.from(e.target.files);
 
     let objectUrl = [];
-    let images = files.map((el) => {
-      if (el.size > 2000000) {
+    let images = files.map((file) => {
+      console.log(file);
+      if (file.size > 2000000) {
         setState((prevState) => {
           return {
             ...prevState,
@@ -47,18 +61,23 @@ const PostAds = (props) => {
         return console.log("file too big");
       }
 
-      if (el.type !== "image/png" && el.type !== "image/jpg") {
+      if (
+        file.type !== "image/png" &&
+        file.type !== "image/jpg" &&
+        file.type !== "image/jpeg"
+      ) {
         setState((prevState) => {
           return {
             ...prevState,
-            error: `${el.name} type not supported. Only support .jpg and .png`,
+            error: `${file.name} type not supported. Only support .jpg and .png`,
           };
         });
         return clearError();
       }
-      objectUrl.push(URL.createObjectURL(el));
-      let alt = el.name.split(".")[0];
-      return { name: el.name, size: el.size, type: el.type, alt };
+
+      let alt = file.name.split(".")[0];
+      objectUrl.push({ tmpUrl: URL.createObjectURL(file), alt });
+      return { file, alt };
     });
 
     setState((prevState) => {
@@ -69,9 +88,12 @@ const PostAds = (props) => {
       };
     });
   };
+  console.log(state);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    console.log(history);
     setState((prevState) => {
       return {
         ...prevState,
@@ -81,6 +103,7 @@ const PostAds = (props) => {
     props
       .postAds(state)
       .then(() => {
+        console.log("ads posted");
         setState((prevState) => {
           return {
             ...prevState,
@@ -90,7 +113,6 @@ const PostAds = (props) => {
       })
       .catch((err) => console.log(err));
   };
-  console.log(state);
 
   const clearError = () => {
     setTimeout(() => {
@@ -110,6 +132,16 @@ const PostAds = (props) => {
         <Col xs={24} sm={18} lg={12} xl={8}>
           <form onSubmit={handleSubmit}>
             <h3 style={style}>Post Ads</h3>
+
+            <Select
+              name="category"
+              style={{ width: 150, marginBottom: "20px" }}
+              placeholder="Category"
+              onChange={handleCategory}
+            >
+              <Option value="car">Car</Option>
+              <Option value="others">Other Stuffs</Option>
+            </Select>
             <Input
               style={style}
               name="title"
@@ -124,7 +156,25 @@ const PostAds = (props) => {
               name="description"
               value={state.description}
               onChange={handleChange}
+              rows={5}
               required
+            />
+            <Input
+              prefix="£ "
+              style={style}
+              name="price"
+              placeholder="Price"
+              required
+              value={state.price}
+              onChange={handleChange}
+            />
+            <Input
+              style={style}
+              name="location"
+              placeholder="Location"
+              required
+              value={state.location}
+              onChange={handleChange}
             />
             <span>
               Use "Ctrl + Click" to select multiple images. Max 3 images with
@@ -135,8 +185,18 @@ const PostAds = (props) => {
             {state.tmpUrl &&
               state.tmpUrl.map((el) => {
                 return (
-                  <div key={el} style={{ marginTop: "10px", display: "block" }}>
-                    <img src={el} alt="preview" />
+                  <div
+                    key={el.tmpUrl}
+                    style={{
+                      marginTop: "10px",
+                      display: "block",
+                    }}
+                  >
+                    <img
+                      src={el.tmpUrl}
+                      style={{ maxWidth: "50vw" }}
+                      alt="preview"
+                    />
                   </div>
                 );
               })}

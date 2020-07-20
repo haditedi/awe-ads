@@ -41,7 +41,6 @@ const Profile = ({ name }) => {
 };
 
 const mapStateToProps = (state) => {
-  console.log(state);
   return {
     name: state.firebase.auth.displayName || state.auth.name,
   };
