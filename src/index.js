@@ -7,18 +7,13 @@ import { Skeleton } from "antd";
 
 import * as serviceWorker from "./serviceWorker";
 
-//import fbConfig from "./config/fbConfig";
 import firebase from "./config/fbConfig";
-//import "firebase/firestore";
+
 import rootReducer from "./store/reducers/rootReducer";
 
 // Redux
 import thunk from "redux-thunk";
-// import {
-//   reduxFirestore,
-//   getFirestore,
-//   createFirestoreInstance,
-// } from "redux-firestore";
+
 import {
   ReactReduxFirebaseProvider,
   getFirebase,
@@ -26,25 +21,19 @@ import {
 } from "react-redux-firebase";
 import { createStore, applyMiddleware, compose } from "redux";
 import { Provider, useSelector } from "react-redux";
-import axios from "axios";
+//import axios from "axios";
 
-axios.defaults.baseURL = "http://localhost:5000";
+//axios.defaults.baseURL = "http://localhost:5000";
 
 //firebase.firestore();
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(
   rootReducer,
-  composeEnhancers(
-    applyMiddleware(thunk.withExtraArgument({ getFirebase }))
-    //getFirestore
-    // reduxFirestore(firebase, fbConfig)
-  )
+  composeEnhancers(applyMiddleware(thunk.withExtraArgument({ getFirebase })))
 );
 
 const rrfConfig = {
-  //userProfile: "users",
-  // useFirestoreForProfile: true,
   attachAuthIsReady: true,
 };
 
@@ -52,7 +41,6 @@ const rrfProps = {
   firebase,
   config: rrfConfig,
   dispatch: store.dispatch,
-  //createFirestoreInstance,
 };
 
 function AuthIsLoaded({ children }) {

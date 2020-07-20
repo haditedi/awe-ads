@@ -7,8 +7,18 @@ import Account from "./pages/Account";
 import Profile from "./pages/Profile";
 import { connect } from "react-redux";
 import NotFound from "./pages/NotFound";
+import firebase from "./config/fbConfig";
 
 function App(props) {
+  let token;
+  firebase
+    .auth()
+    .currentUser.getIdToken(true)
+    .then((res) => {
+      token = res;
+      console.log(token);
+    });
+
   let routes;
   if (props.isAuth) {
     routes = (

@@ -49,7 +49,6 @@ const PostAds = (props) => {
 
     let objectUrl = [];
     let images = files.map((file) => {
-      console.log(file);
       if (file.size > 2000000) {
         setState((prevState) => {
           return {
@@ -88,7 +87,6 @@ const PostAds = (props) => {
       };
     });
   };
-  console.log(state);
 
   const handleSubmit = (e) => {
     e.preventDefault();
