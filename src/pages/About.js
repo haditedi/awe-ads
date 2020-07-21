@@ -7,15 +7,22 @@ import newborn from "../images/newborn.jpg";
 const About = () => {
   return (
     <Display>
-      <HeadingText text="About Page" />
-
       <Row justify="center">
-        <Col xs={24} sm={24}>
-          <img
-            style={{ width: "80vw", maxWidth: "900px" }}
-            src={newborn}
-            alt="newborn baby"
-          />
+        <Col>
+          <HeadingText text="About Page" />
+          <div
+            style={{
+              height: "50vw",
+              maxHeight: "300px",
+              maxWidth: "500px",
+            }}
+          >
+            <img
+              style={{ height: "50vw", maxHeight: "300px", maxWidth: "500px" }}
+              src={newborn}
+              alt="newborn baby"
+            />
+          </div>
 
           <p style={{ marginTop: "20px" }}>
             Hi, Iam newly born. Please support :)

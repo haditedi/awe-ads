@@ -44,10 +44,6 @@ export const postAds = (ads) => {
     }
     getData(ads)
       .then(() => {
-        //return firebase.auth().currentUser.getIdToken(true);
-      })
-      .then((token) => {
-        console.log(token);
         axios.post("/post-ads", data);
       })
       .then((resp) => {
@@ -61,6 +57,8 @@ export const postAds = (ads) => {
   };
 };
 
-// {
-//   headers: { authorization: `${token}` },
-// }
+export const clearMessage = () => {
+  return (dispatch) => {
+    dispatch({ type: "CLEAR_MESSAGE" });
+  };
+};

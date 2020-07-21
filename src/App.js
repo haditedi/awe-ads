@@ -12,14 +12,15 @@ import axios from "axios";
 
 function App(props) {
   const [token, setToken] = useState();
-  firebase
-    .auth()
-    .currentUser.getIdToken(true)
-    .then((res) => {
-      setToken(res);
-    });
+  if (firebase.auth().currentUser) {
+    firebase
+      .auth()
+      .currentUser.getIdToken(true)
+      .then((res) => {
+        setToken(res);
+      });
+  }
 
-  console.log(token);
   axios.defaults.baseURL = "http://localhost:5000";
   axios.defaults.headers.common["Authorization"] = token;
 

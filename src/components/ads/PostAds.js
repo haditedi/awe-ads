@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { Input, Button, Row, Col, Select } from "antd";
+import { Input, Button, Row, Col, Select, InputNumber } from "antd";
 import { connect } from "react-redux";
 import { postAds } from "../../store/actions/adsActions";
 import { Redirect } from "react-router-dom";
 import ErrorAlert from "../ErrorAlert";
-import { useHistory } from "react-router-dom";
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -13,7 +12,6 @@ const style = {
 };
 
 const PostAds = (props) => {
-  const history = useHistory();
   const [state, setState] = useState({
     title: "",
     description: "",
@@ -22,7 +20,7 @@ const PostAds = (props) => {
     loading: false,
     error: "",
     category: "",
-    price: "",
+    price: 0,
     location: "",
   });
 
@@ -43,6 +41,15 @@ const PostAds = (props) => {
       };
     });
   };
+  const handleNumber = (e) => {
+    setState((prevState) => {
+      return {
+        ...prevState,
+        price: e,
+      };
+    });
+  };
+  console.log(state);
 
   const handleFiles = (e) => {
     let files = Array.from(e.target.files);
@@ -91,7 +98,6 @@ const PostAds = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log(history);
     setState((prevState) => {
       return {
         ...prevState,
@@ -130,7 +136,6 @@ const PostAds = (props) => {
         <Col xs={24} sm={18} lg={12} xl={8}>
           <form onSubmit={handleSubmit}>
             <h3 style={style}>Post Ads</h3>
-
             <Select
               name="category"
               style={{ width: 150, marginBottom: "20px" }}
@@ -157,14 +162,15 @@ const PostAds = (props) => {
               rows={5}
               required
             />
-            <Input
-              prefix="£ "
+
+            <InputNumber
               style={style}
-              name="price"
-              placeholder="Price"
-              required
-              value={state.price}
-              onChange={handleChange}
+              defaultValue={0}
+              formatter={(value) =>
+                `£ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+              }
+              parser={(value) => value.replace(/\£\s?|(,*)/g, "")}
+              onChange={handleNumber}
             />
             <Input
               style={style}
@@ -178,8 +184,13 @@ const PostAds = (props) => {
               Use "Ctrl + Click" to select multiple images. Max 3 images with
               less than 2 mb each.
             </span>
-            <Input type="file" name="files" multiple onChange={handleFiles} />
-
+            <Input
+              required
+              type="file"
+              name="files"
+              multiple
+              onChange={handleFiles}
+            />
             {state.tmpUrl &&
               state.tmpUrl.map((el) => {
                 return (

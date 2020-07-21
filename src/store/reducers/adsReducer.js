@@ -16,6 +16,10 @@ const adsReducer = (state = initState, action) => {
         ...state,
         adsError: action.err.message,
       };
+    case "CLEAR_MESSAGE":
+      return {
+        initState,
+      };
 
     default:
       return state;

@@ -2,10 +2,12 @@ import React from "react";
 import { Row, Col } from "antd";
 import { Card } from "antd";
 import { Skeleton } from "antd";
+import CardBody from "./CardBody";
 
 const { Meta } = Card;
 
 const AdsSummary = ({ state, loading }) => {
+  console.log(state);
   return (
     <section>
       {loading && <Skeleton active />}
@@ -22,11 +24,20 @@ const AdsSummary = ({ state, loading }) => {
           return (
             <Col key={el._id}>
               <Card
-                hoverable
                 style={{ width: 240, height: 350 }}
+                hoverable
                 cover={<img alt={el.alt} src={el.imageUrl[0].url} />}
               >
-                <Meta title={el.title} description={result} />
+                <Meta
+                  title={el.title}
+                  description={
+                    <CardBody
+                      location={el.location}
+                      price={el.price}
+                      description={el.result}
+                    />
+                  }
+                />
               </Card>
             </Col>
           );
