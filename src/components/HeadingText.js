@@ -6,7 +6,7 @@ const HeadingText = (props) => {
     <section style={{ marginTop: "20px" }}>
       <Row>
         <Col>
-          <h1>{props.text}</h1>
+          <h1 style={props.style}>{props.text}</h1>
         </Col>
       </Row>
     </section>

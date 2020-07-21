@@ -39,6 +39,7 @@ export const postAds = (ads) => {
                 });
             }
           );
+          return progress;
         });
       });
     }
@@ -53,6 +54,54 @@ export const postAds = (ads) => {
       .catch((err) => {
         console.log(err);
         dispatch({ type: "POST_ADS_ERROR", err });
+      });
+  };
+};
+
+export const deleteAd = (item) => {
+  return (dispatch, getState, { getFirebase }) => {
+    const firebase = getFirebase();
+    //let image = item.imageUrl[0].url;
+    //let result = image.split("?")[0].split("2F").pop();
+    let url = item.imageUrl.map((el) => {
+      return el.url.split("?")[0].split("2F").pop();
+    });
+    let urlLength = url.length;
+
+    //console.log(image);
+    console.log(url);
+    function deleteImage(param) {
+      return new Promise((resolve, reject) => {
+        param.map((el) => {
+          firebase
+            .storage()
+            .ref(`images/${el}`)
+            .delete()
+            .then(() => {
+              urlLength--;
+              console.log(urlLength);
+              if (urlLength === 0) {
+                resolve("messages deleted");
+              }
+            })
+            .catch((err) => reject(err));
+          return urlLength;
+        });
+      });
+    }
+
+    deleteImage(url)
+      .then((resp) => {
+        console.log("Success", resp);
+        axios.post("/delete-ad", { _id: item._id });
+      })
+      .then(() => {
+        console.log("axios success");
+        dispatch({ type: "DELETE_AD_SUCCESS", payload: item.title });
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatch({ type: "DELETE_AD_ERROR", err });
       });
   };
 };

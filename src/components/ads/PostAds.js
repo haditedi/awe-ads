@@ -22,6 +22,7 @@ const PostAds = (props) => {
     category: "",
     price: 0,
     location: "",
+    contact: "",
   });
 
   const handleChange = (e) => {
@@ -54,6 +55,16 @@ const PostAds = (props) => {
   const handleFiles = (e) => {
     let files = Array.from(e.target.files);
 
+    if (files.length > 3) {
+      setState((prevState) => {
+        return {
+          ...prevState,
+          error: "Maximum 3 images allowed",
+        };
+      });
+      return clearError();
+    }
+
     let objectUrl = [];
     let images = files.map((file) => {
       if (file.size > 2000000) {
@@ -63,8 +74,7 @@ const PostAds = (props) => {
             error: "file too big. Max size is 2 mb / image.",
           };
         });
-        clearError();
-        return console.log("file too big");
+        return clearError();
       }
 
       if (
@@ -171,6 +181,14 @@ const PostAds = (props) => {
               }
               parser={(value) => value.replace(/\£\s?|(,*)/g, "")}
               onChange={handleNumber}
+            />
+            <Input
+              style={style}
+              name="contact"
+              placeholder="Contact Detail"
+              required
+              value={state.contact}
+              onChange={handleChange}
             />
             <Input
               style={style}

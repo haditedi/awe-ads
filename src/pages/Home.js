@@ -13,7 +13,7 @@ import classes from "./home.module.css";
 const Home = () => {
   const [state, setState] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  console.log(state);
   useEffect(() => {
     axios
       .get("/get-ads")

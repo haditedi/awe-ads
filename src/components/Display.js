@@ -65,16 +65,19 @@ const Display = ({ children, location, history, isAuth, logout, name }) => {
         defaultSelectedKeys={["/"]}
         selectedKeys={[location.pathname]}
       >
-        <Menu.Item>
-          <img
-            style={{
-              width: "50px",
-              display: "inline",
-              textTransform: "rotate(22deg)",
-            }}
-            src={brand}
-            alt="brand"
-          />
+        <Menu.Item key="brand">
+          <NavLink to="/">
+            {" "}
+            <img
+              style={{
+                width: "50px",
+                display: "inline",
+                textTransform: "rotate(22deg)",
+              }}
+              src={brand}
+              alt="brand"
+            />
+          </NavLink>
         </Menu.Item>
         <Menu.Item key="/">
           {" "}

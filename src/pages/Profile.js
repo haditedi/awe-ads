@@ -4,10 +4,10 @@ import { connect } from "react-redux";
 import { Row, Col, Result, Button } from "antd";
 import PostAds from "../components/ads/PostAds";
 import AdsSummary from "../components/ads/AdsSummary";
-import { clearMessage } from "../store/actions/adsActions";
+import { clearMessage, deleteAd } from "../store/actions/adsActions";
 import axios from "axios";
 
-const Profile = ({ name, uid, message, clearMessage }) => {
+const Profile = ({ name, uid, message, clearMessage, deleteAd }) => {
   const [state, setState] = useState({
     postAds: false,
     data: [],
@@ -55,6 +55,7 @@ const Profile = ({ name, uid, message, clearMessage }) => {
       };
     });
   };
+
   return (
     <Display>
       <Row justify="center">
@@ -75,12 +76,18 @@ const Profile = ({ name, uid, message, clearMessage }) => {
         </Col>
       </Row>
       {message && <Result status="success" title={message} />}
+
       {state.postAds ? (
         <PostAds />
       ) : (
         <Row style={{ marginTop: "35px" }}>
           <Col>
-            <AdsSummary state={state.data} loading={loading} />
+            <AdsSummary
+              state={state.data}
+              loading={loading}
+              uid={uid}
+              deleteAd={deleteAd}
+            />
           </Col>
         </Row>
       )}
@@ -98,6 +105,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     clearMessage: () => dispatch(clearMessage()),
+    deleteAd: (item) => dispatch(deleteAd(item)),
   };
 };
 

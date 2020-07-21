@@ -5,6 +5,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Account from "./pages/Account";
 import Profile from "./pages/Profile";
+import AdDetail from "./pages/AdDetail";
 import { connect } from "react-redux";
 import NotFound from "./pages/NotFound";
 import firebase from "./config/fbConfig";
@@ -31,6 +32,7 @@ function App(props) {
         <Route path="/about" component={About} />
         <Route path="/contact" component={Contact} />
         <Route path="/profile" component={Profile} />
+        <Route path="/ad-detail/:id" component={AdDetail} />
         <Route path="/" exact component={Home} />
         <Route path="/" component={NotFound} />
       </Switch>
@@ -41,6 +43,7 @@ function App(props) {
         <Route path="/about" component={About} />
         <Route path="/contact" component={Contact} />
         <Route path="/account" component={Account} />
+        <Route path="/ad-detail/:id" component={AdDetail} />
         <Route path="/" exact component={Home} />
         <Route path="/" component={NotFound} />
       </Switch>
