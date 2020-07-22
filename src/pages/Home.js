@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { motion } from "framer-motion";
+import { heroVariants } from "../config/motion";
 import awAds from "../images/aw-ads.svg";
 import couple from "../images/couple.svg";
 import { Row, Col, Skeleton } from "antd";
@@ -31,45 +32,56 @@ const Home = () => {
 
   return (
     <Display>
-      <section>
-        <Row justify="center">
-          <Col xs={24}>
-            <div className={classes.heroContainer}>
-              <motion.img
-                variants={heroVariants}
-                initial="hidden"
-                animate="visible"
-                className={classes.brand}
-                src={awAds}
-                alt="brand name"
-              />
-              <img className={classes.hero} src={couple} alt="couple" />
-            </div>
-          </Col>
-        </Row>
-      </section>
+      <div>
+        <motion.section
+          variants={heroVariants}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+        >
+          <Row justify="center">
+            <Col xs={24}>
+              <div className={classes.heroContainer}>
+                <motion.img
+                  variants={heroVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  className={classes.brand}
+                  src={awAds}
+                  alt="brand name"
+                />
+                <img className={classes.hero} src={couple} alt="couple" />
+              </div>
+            </Col>
+          </Row>
+        </motion.section>
 
-      {loading && <Skeleton active />}
+        {loading && <Skeleton active />}
 
-      <HeadingText text="Category" />
-      <Category state={state} />
+        <HeadingText text="Category" />
+        <Category state={state} />
 
-      <HeadingText text="Latest Post" />
-      <AdsSummary state={state} loading={loading} />
+        <HeadingText text="Latest Post" />
+        <AdsSummary state={state} loading={loading} />
+      </div>
     </Display>
   );
 };
 
 export default Home;
 
-const heroVariants = {
-  hidden: {
-    y: "-100vw",
-    opacity: 0,
-  },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: { type: "spring", stiffness: 50 },
-  },
-};
+// const heroVariants = {
+//   hidden: {
+//     y: "-100vw",
+//     opacity: 0,
+//   },
+//   visible: {
+//     y: 0,
+//     opacity: 1,
+//     transition: { type: "spring", stiffness: 50 },
+//   },
+//   exit: {
+//     y: "-100vw",
+//   },
+// };

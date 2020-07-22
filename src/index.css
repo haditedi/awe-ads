@@ -19,12 +19,17 @@ code {
 
 h1 {
   font-size: 3em;
+  color: #6c6b6b;
 }
 h2 {
   font-size: 2.5em;
 }
 h3 {
   font-size: 2em;
+  color: #817f7f;
+}
+h5 {
+  color: #817f7f;
 }
 p {
   font-size: 1.5em;

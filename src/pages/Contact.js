@@ -4,6 +4,8 @@ import HeadingText from "../components/HeadingText";
 import { Input, Button, Row, Col, Alert } from "antd";
 import { MailOutlined, UserOutlined } from "@ant-design/icons";
 import axios from "axios";
+import { motion } from "framer-motion";
+import { heroVariants } from "../config/motion";
 
 const style = {
   marginBottom: "20px",
@@ -82,70 +84,77 @@ const Contact = () => {
 
   return (
     <Display>
-      <Row justify="center">
-        <Col xs={24} sm={18} lg={16} xl={14} className="tilt">
-          {!state.sendStatus ? (
-            <form onSubmit={handleSubmit}>
-              <HeadingText text="Contact Us" />
-              <Input
-                type="text"
-                style={style}
-                prefix={<UserOutlined style={{ paddingRight: "5px" }} />}
-                placeholder="Name"
-                name="name"
-                required
-                value={state.name}
-                onChange={handleChange}
-              />
-              <Input
-                type="email"
-                style={style}
-                prefix={<MailOutlined style={{ paddingRight: "5px" }} />}
-                placeholder="Email"
-                name="email"
-                required
-                value={state.email}
-                onChange={handleChange}
-              />
+      <motion.div
+        variants={heroVariants}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+      >
+        <Row justify="center">
+          <Col xs={24} sm={18} lg={16} xl={14} className="tilt">
+            {!state.sendStatus ? (
+              <form onSubmit={handleSubmit}>
+                <HeadingText text="Contact Us" />
+                <Input
+                  type="text"
+                  style={style}
+                  prefix={<UserOutlined style={{ paddingRight: "5px" }} />}
+                  placeholder="Name"
+                  name="name"
+                  required
+                  value={state.name}
+                  onChange={handleChange}
+                />
+                <Input
+                  type="email"
+                  style={style}
+                  prefix={<MailOutlined style={{ paddingRight: "5px" }} />}
+                  placeholder="Email"
+                  name="email"
+                  required
+                  value={state.email}
+                  onChange={handleChange}
+                />
 
-              <TextArea
+                <TextArea
+                  style={style}
+                  placeholder="Message"
+                  name="message"
+                  value={state.message}
+                  onChange={handleChange}
+                  rows={7}
+                  required
+                />
+
+                {state.error && (
+                  <Alert message={state.error} type="error" showIcon />
+                )}
+
+                {state.loading ? (
+                  <Button style={{ marginTop: "20px" }} loading="true">
+                    Submit
+                  </Button>
+                ) : (
+                  <Button
+                    style={{ marginTop: "20px" }}
+                    type="primary"
+                    htmlType="submit"
+                  >
+                    Submit
+                  </Button>
+                )}
+              </form>
+            ) : (
+              <Alert
                 style={style}
-                placeholder="Message"
-                name="message"
-                value={state.message}
-                onChange={handleChange}
-                rows={7}
-                required
+                message={state.success}
+                type="success"
+                showIcon
               />
-
-              {state.error && (
-                <Alert message={state.error} type="error" showIcon />
-              )}
-
-              {state.loading ? (
-                <Button style={{ marginTop: "20px" }} loading="true">
-                  Submit
-                </Button>
-              ) : (
-                <Button
-                  style={{ marginTop: "20px" }}
-                  type="primary"
-                  htmlType="submit"
-                >
-                  Submit
-                </Button>
-              )}
-            </form>
-          ) : (
-            <Alert
-              style={style}
-              message={state.success}
-              type="success"
-              showIcon
-            />
-          )}
-        </Col>
-      </Row>
+            )}
+          </Col>
+        </Row>
+      </motion.div>
     </Display>
   );
 };

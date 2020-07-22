@@ -6,6 +6,8 @@ import PostAds from "../components/ads/PostAds";
 import AdsSummary from "../components/ads/AdsSummary";
 import { clearMessage, deleteAd } from "../store/actions/adsActions";
 import axios from "axios";
+import { motion } from "framer-motion";
+import { heroVariants } from "../config/motion";
 
 const Profile = ({ name, uid, message, clearMessage, deleteAd }) => {
   const [state, setState] = useState({
@@ -58,39 +60,46 @@ const Profile = ({ name, uid, message, clearMessage, deleteAd }) => {
 
   return (
     <Display>
-      <Row justify="center">
-        <Col>
-          <h1
-            ref={success}
-            style={{ textTransform: "capitalize", marginTop: "20px" }}
-          >
-            Welcome {name}
-          </h1>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <Button type="primary" shape="round" onClick={handlePostAds}>
-            Post Ads
-          </Button>
-        </Col>
-      </Row>
-      {message && <Result status="success" title={message} />}
-
-      {state.postAds ? (
-        <PostAds />
-      ) : (
-        <Row style={{ marginTop: "35px" }}>
+      <motion.div
+        variants={heroVariants}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+      >
+        <Row justify="center">
           <Col>
-            <AdsSummary
-              state={state.data}
-              loading={loading}
-              uid={uid}
-              deleteAd={deleteAd}
-            />
+            <h1
+              ref={success}
+              style={{ textTransform: "capitalize", marginTop: "20px" }}
+            >
+              Welcome {name}
+            </h1>
           </Col>
         </Row>
-      )}
+        <Row>
+          <Col>
+            <Button type="primary" shape="round" onClick={handlePostAds}>
+              Post Ads
+            </Button>
+          </Col>
+        </Row>
+        {message && <Result status="success" title={message} />}
+
+        {state.postAds ? (
+          <PostAds />
+        ) : (
+          <Row style={{ marginTop: "35px" }}>
+            <Col>
+              <AdsSummary
+                state={state.data}
+                loading={loading}
+                uid={uid}
+                deleteAd={deleteAd}
+              />
+            </Col>
+          </Row>
+        )}
+      </motion.div>
     </Display>
   );
 };

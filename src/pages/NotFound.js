@@ -1,9 +1,18 @@
-import React from "react"
+import React from "react";
+import { motion } from "framer-motion";
+import { heroVariants } from "../config/motion";
 
 const NotFound = () => {
-	return(
-<div><h1>Page not Found</h1></div>
-		) 
-}
+  return (
+    <motion.div
+      variants={heroVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+    >
+      <h1>Page not Found</h1>
+    </motion.div>
+  );
+};
 
-export default NotFound
+export default NotFound;

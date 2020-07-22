@@ -5,7 +5,7 @@ const CardBody = ({ location, price, description, posted }) => {
     <div>
       <h5>Location: {location}</h5>
       <h5>Price: £ {price}</h5>
-      <h5>Posted: {posted}</h5>
+      <h5 style={{ fontStyle: "italic" }}>Posted: {posted}</h5>
       <p>{description}</p>
     </div>
   );

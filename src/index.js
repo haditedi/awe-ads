@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import "antd/dist/antd.css";
 import "./index.css";
 import App from "./App";
+import { BrowserRouter as Router } from "react-router-dom";
 import { Skeleton } from "antd";
 
 import * as serviceWorker from "./serviceWorker";
@@ -13,7 +14,6 @@ import rootReducer from "./store/reducers/rootReducer";
 
 // Redux
 import thunk from "redux-thunk";
-
 import {
   ReactReduxFirebaseProvider,
   getFirebase,
@@ -21,11 +21,7 @@ import {
 } from "react-redux-firebase";
 import { createStore, applyMiddleware, compose } from "redux";
 import { Provider, useSelector } from "react-redux";
-//import axios from "axios";
 
-//axios.defaults.baseURL = "http://localhost:5000";
-
-//firebase.firestore();
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(
@@ -53,7 +49,9 @@ ReactDOM.render(
   <Provider store={store}>
     <ReactReduxFirebaseProvider {...rrfProps}>
       <AuthIsLoaded>
-        <App />
+        <Router>
+          <App />
+        </Router>
       </AuthIsLoaded>
     </ReactReduxFirebaseProvider>
   </Provider>,
