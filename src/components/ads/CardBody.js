@@ -1,10 +1,11 @@
 import React from "react";
 
-const CardBody = ({ location, price, description }) => {
+const CardBody = ({ location, price, description, posted }) => {
   return (
     <div>
       <h5>Location: {location}</h5>
-      <h5>Price: {price}</h5>
+      <h5>Price: £ {price}</h5>
+      <h5>Posted: {posted}</h5>
       <p>{description}</p>
     </div>
   );

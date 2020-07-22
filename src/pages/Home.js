@@ -3,10 +3,11 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import awAds from "../images/aw-ads.svg";
 import couple from "../images/couple.svg";
-import { Row, Col } from "antd";
+import { Row, Col, Skeleton } from "antd";
 import AdsSummary from "../components/ads/AdsSummary";
 import Display from "../components/Display";
 import HeadingText from "../components/HeadingText";
+import Category from "../components/Category";
 import axios from "axios";
 import classes from "./home.module.css";
 
@@ -47,7 +48,13 @@ const Home = () => {
           </Col>
         </Row>
       </section>
-      <HeadingText text="For Sale" />
+
+      {loading && <Skeleton active />}
+
+      <HeadingText text="Category" />
+      <Category state={state} />
+
+      <HeadingText text="Latest Post" />
       <AdsSummary state={state} loading={loading} />
     </Display>
   );

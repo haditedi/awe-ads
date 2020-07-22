@@ -93,6 +93,7 @@ const PostAds = (props) => {
 
       let alt = file.name.split(".")[0];
       objectUrl.push({ tmpUrl: URL.createObjectURL(file), alt });
+
       return { file, alt };
     });
 

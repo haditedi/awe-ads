@@ -2,7 +2,7 @@ import React from "react";
 import Display from "../components/Display";
 import HeadingText from "../components/HeadingText";
 import CardAdDetail from "../components/ads/CardAdDetail";
-import { Row, Col, Card, Button } from "antd";
+import { Row, Col, Card } from "antd";
 
 const { Meta } = Card;
 

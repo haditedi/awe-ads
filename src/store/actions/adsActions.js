@@ -11,10 +11,17 @@ export const postAds = (ads) => {
         let imageLength = param.image.length;
 
         param.image.map((el) => {
+          let newFileName = el.file.name.split(".");
+          let extension = newFileName.pop();
+          let random = Math.floor(Math.random() * 1000000000);
+          newFileName.push(random);
+          newFileName = newFileName.join("");
+          newFileName = newFileName + "." + extension;
+
           let progress;
           const uploadTask = firebase
             .storage()
-            .ref(`images/${el.file.name}`)
+            .ref(`images/${newFileName}`)
             .put(el.file);
           uploadTask.on(
             "state_changed",

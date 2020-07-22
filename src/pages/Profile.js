@@ -16,6 +16,7 @@ const Profile = ({ name, uid, message, clearMessage, deleteAd }) => {
   const success = useRef(null);
 
   useEffect(() => {
+    setLoading(true);
     setState((prevValue) => {
       return {
         ...prevValue,
@@ -28,23 +29,22 @@ const Profile = ({ name, uid, message, clearMessage, deleteAd }) => {
       setTimeout(() => {
         clearMessage();
       }, 3000);
-    } else {
-      axios
-        .get(`/get-ads/${uid}`)
-        .then((res) => {
-          const doc = res.data;
-
-          setState((prevValue) => {
-            return {
-              ...prevValue,
-              data: doc.data.result,
-            };
-          });
-
-          setLoading(false);
-        })
-        .catch((err) => console.log(err));
     }
+    axios
+      .get(`/get-ads/${uid}`)
+      .then((res) => {
+        const doc = res.data;
+
+        setState((prevValue) => {
+          return {
+            ...prevValue,
+            data: doc.data.result,
+          };
+        });
+
+        setLoading(false);
+      })
+      .catch((err) => console.log(err));
   }, [message, uid, clearMessage]);
 
   const handlePostAds = () => {
