@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 const { Meta } = Card;
 
 const Category = ({ state }) => {
-  console.log(state);
   return (
     <section>
       <Row gutter={[16, 16]}>

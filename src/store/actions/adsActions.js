@@ -3,6 +3,8 @@ import axios from "axios";
 export const postAds = (ads) => {
   return async (dispatch, getState, { getFirebase }) => {
     const firebase = getFirebase();
+    const uid = firebase.auth().currentUser.uid;
+    console.log(uid);
 
     let data = { ...ads, imageUrl: [] };
 
@@ -21,7 +23,7 @@ export const postAds = (ads) => {
           let progress;
           const uploadTask = firebase
             .storage()
-            .ref(`images/${newFileName}`)
+            .ref(`images/${uid}/${newFileName}`)
             .put(el.file);
           uploadTask.on(
             "state_changed",
@@ -57,10 +59,16 @@ export const postAds = (ads) => {
       .then((resp) => {
         console.log("ADS POSTED", resp);
         dispatch({ type: "POST_ADS_SUCCESS", payload: ads.title });
+        setTimeout(() => {
+          dispatch({ type: "CLEAR_MESSAGE" });
+        }, 2000);
       })
       .catch((err) => {
         console.log(err);
         dispatch({ type: "POST_ADS_ERROR", err });
+        setTimeout(() => {
+          dispatch({ type: "CLEAR_MESSAGE" });
+        }, 2000);
       });
   };
 };
@@ -68,21 +76,20 @@ export const postAds = (ads) => {
 export const deleteAd = (item) => {
   return (dispatch, getState, { getFirebase }) => {
     const firebase = getFirebase();
-    //let image = item.imageUrl[0].url;
-    //let result = image.split("?")[0].split("2F").pop();
+    const uid = firebase.auth().currentUser.uid;
+    console.log(uid);
+
     let url = item.imageUrl.map((el) => {
       return el.url.split("?")[0].split("2F").pop();
     });
     let urlLength = url.length;
 
-    //console.log(image);
-    console.log(url);
     function deleteImage(param) {
       return new Promise((resolve, reject) => {
         param.map((el) => {
           firebase
             .storage()
-            .ref(`images/${el}`)
+            .ref(`images/${uid}/${el}`)
             .delete()
             .then(() => {
               urlLength--;
@@ -105,16 +112,16 @@ export const deleteAd = (item) => {
       .then(() => {
         console.log("axios success");
         dispatch({ type: "DELETE_AD_SUCCESS", payload: item.title });
+        setTimeout(() => {
+          dispatch({ type: "CLEAR_MESSAGE" });
+        }, 2000);
       })
       .catch((err) => {
         console.log(err);
-        dispatch({ type: "DELETE_AD_ERROR", err });
+        dispatch({ type: "DELETE_AD_ERROR" });
+        setTimeout(() => {
+          dispatch({ type: "CLEAR_MESSAGE" });
+        }, 2000);
       });
-  };
-};
-
-export const clearMessage = () => {
-  return (dispatch) => {
-    dispatch({ type: "CLEAR_MESSAGE" });
   };
 };

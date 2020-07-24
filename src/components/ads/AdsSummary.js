@@ -15,7 +15,7 @@ const AdsSummary = ({ state, loading, uid, deleteAd }) => {
       {loading && <Skeleton active />}
       <Row gutter={[16, 16]}>
         {state.map((el) => {
-          let now = dayjs();
+          let now = dayjs(el.createdAt);
           return (
             <Col key={el._id}>
               {" "}
@@ -36,7 +36,7 @@ const AdsSummary = ({ state, loading, uid, deleteAd }) => {
                       <CardBody
                         location={el.location}
                         price={el.price}
-                        posted={now.from(el.createdAt, true)}
+                        posted={now.fromNow()}
                       />
                     }
                   />

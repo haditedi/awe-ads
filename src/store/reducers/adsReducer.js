@@ -14,7 +14,7 @@ const adsReducer = (state = initState, action) => {
     case "POST_ADS_ERROR":
       return {
         ...state,
-        adsError: action.err.message,
+        adsError: "Sorry, something went wrong,,,",
       };
     case "CLEAR_MESSAGE":
       return {
@@ -28,7 +28,7 @@ const adsReducer = (state = initState, action) => {
     case "DELETE_AD_ERROR":
       return {
         ...state,
-        adsError: action.err.message,
+        adsError: "Sorry, something went wrong. Unable to delete",
       };
 
     default:

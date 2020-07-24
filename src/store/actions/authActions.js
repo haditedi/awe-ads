@@ -67,8 +67,10 @@ export const signOut = (history) => {
     firebase
       .auth()
       .signOut()
-      .then(() => history.push("/"));
-    dispatch({ type: "SIGN_OUT" });
-    console.log("Log out");
+      .then(() => {
+        console.log("Log out");
+        dispatch({ type: "SIGN_OUT" });
+        history.push("/");
+      });
   };
 };

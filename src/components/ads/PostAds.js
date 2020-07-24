@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Input, Button, Row, Col, Select, InputNumber } from "antd";
 import { connect } from "react-redux";
 import { postAds } from "../../store/actions/adsActions";
-import { Redirect } from "react-router-dom";
 import ErrorAlert from "../ErrorAlert";
 
 const { TextArea } = Input;
@@ -11,7 +10,7 @@ const style = {
   marginBottom: "20px",
 };
 
-const PostAds = (props) => {
+const PostAds = ({ postAds }) => {
   const [state, setState] = useState({
     title: "",
     description: "",
@@ -24,13 +23,22 @@ const PostAds = (props) => {
     location: "",
     contact: "",
   });
+  const [numLetter, setNumLetter] = useState(0);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    if (name === "title") {
+      const remainingLetter = 20 - value.length;
+      setNumLetter(remainingLetter);
+      if (remainingLetter === 0) return;
+    } else {
+      setNumLetter(0);
+    }
+
     setState((prevState) => {
       return {
         ...prevState,
-        [name]: value,
+        [name]: value.toLowerCase(),
       };
     });
   };
@@ -115,8 +123,7 @@ const PostAds = (props) => {
         loading: true,
       };
     });
-    props
-      .postAds(state)
+    postAds(state)
       .then(() => {
         console.log("ads posted");
         setState((prevState) => {
@@ -140,9 +147,10 @@ const PostAds = (props) => {
     }, 3000);
   };
 
+  console.log(state);
+
   return (
     <section style={{ marginTop: "50px" }}>
-      {props.ads.imageUrl && <Redirect to="/" />}
       <Row justify="center" align="bottom">
         <Col xs={24} sm={18} lg={12} xl={8}>
           <form onSubmit={handleSubmit}>
@@ -156,6 +164,7 @@ const PostAds = (props) => {
               <Option value="car">Car</Option>
               <Option value="others">Other Stuffs</Option>
             </Select>
+
             <Input
               style={style}
               name="title"
@@ -164,6 +173,10 @@ const PostAds = (props) => {
               value={state.title}
               onChange={handleChange}
             />
+            {numLetter > 1 && (
+              <div style={style}>Maximum 20 letters. {numLetter} left.</div>
+            )}
+
             <TextArea
               style={style}
               placeholder="Description"
@@ -175,6 +188,7 @@ const PostAds = (props) => {
             />
 
             <InputNumber
+              min={0}
               style={style}
               defaultValue={0}
               formatter={(value) =>
@@ -231,6 +245,7 @@ const PostAds = (props) => {
             {state.error && (
               <ErrorAlert style={{ marginTop: "20px" }} error={state.error} />
             )}
+
             {state.loading ? (
               <Button
                 loading="true"
@@ -256,15 +271,10 @@ const PostAds = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    ads: state.ads,
-  };
-};
 const mapDispatchToProps = (dispatch) => {
   return {
     postAds: (form) => dispatch(postAds(form)),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PostAds);
+export default connect(null, mapDispatchToProps)(PostAds);

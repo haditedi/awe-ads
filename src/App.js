@@ -26,7 +26,7 @@ function App(props) {
       });
   }
 
-  axios.defaults.baseURL = "http://localhost:5000";
+  axios.defaults.baseURL = "https://dazzling-zion-41313.herokuapp.com/";
   axios.defaults.headers.common["Authorization"] = token;
 
   let routes;

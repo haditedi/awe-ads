@@ -4,12 +4,12 @@ import { connect } from "react-redux";
 import { Row, Col, Result, Button } from "antd";
 import PostAds from "../components/ads/PostAds";
 import AdsSummary from "../components/ads/AdsSummary";
-import { clearMessage, deleteAd } from "../store/actions/adsActions";
+import { deleteAd } from "../store/actions/adsActions";
 import axios from "axios";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { heroVariants } from "../config/motion";
 
-const Profile = ({ name, uid, message, clearMessage, deleteAd }) => {
+const Profile = ({ name, uid, message, deleteAd, adsError }) => {
   const [state, setState] = useState({
     postAds: false,
     data: [],
@@ -18,20 +18,6 @@ const Profile = ({ name, uid, message, clearMessage, deleteAd }) => {
   const success = useRef(null);
 
   useEffect(() => {
-    setLoading(true);
-    setState((prevValue) => {
-      return {
-        ...prevValue,
-        postAds: false,
-      };
-    });
-
-    if (message) {
-      success.current.scrollIntoView({ behavior: "smooth", block: "start" });
-      setTimeout(() => {
-        clearMessage();
-      }, 3000);
-    }
     axios
       .get(`/get-ads/${uid}`)
       .then((res) => {
@@ -47,7 +33,18 @@ const Profile = ({ name, uid, message, clearMessage, deleteAd }) => {
         setLoading(false);
       })
       .catch((err) => console.log(err));
-  }, [message, uid, clearMessage]);
+    setLoading(true);
+    setState((prevValue) => {
+      return {
+        ...prevValue,
+        postAds: false,
+      };
+    });
+
+    if (message || adsError) {
+      success.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [message, adsError, uid]);
 
   const handlePostAds = () => {
     setState((prevState) => {
@@ -57,6 +54,7 @@ const Profile = ({ name, uid, message, clearMessage, deleteAd }) => {
       };
     });
   };
+  console.log(state.postAds);
 
   return (
     <Display>
@@ -83,22 +81,61 @@ const Profile = ({ name, uid, message, clearMessage, deleteAd }) => {
             </Button>
           </Col>
         </Row>
-        {message && <Result status="success" title={message} />}
+        <AnimatePresence>
+          {message && (
+            <motion.div
+              key="result"
+              variants={heroVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+            >
+              <Result status="success" title={message} />
+            </motion.div>
+          )}
+          {adsError && (
+            <motion.div
+              key="error"
+              variants={heroVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+            >
+              <Result status="error" title={adsError} />
+            </motion.div>
+          )}
 
-        {state.postAds ? (
-          <PostAds />
-        ) : (
-          <Row style={{ marginTop: "35px" }}>
-            <Col>
-              <AdsSummary
-                state={state.data}
-                loading={loading}
-                uid={uid}
-                deleteAd={deleteAd}
-              />
-            </Col>
-          </Row>
-        )}
+          {state.postAds ? (
+            <motion.div
+              key="postAds"
+              variants={heroVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+            >
+              <PostAds />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="summ"
+              variants={heroVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+            >
+              <Row style={{ marginTop: "35px" }}>
+                <Col>
+                  <AdsSummary
+                    state={state.data}
+                    loading={loading}
+                    uid={uid}
+                    deleteAd={deleteAd}
+                  />
+                </Col>
+              </Row>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.div>
     </Display>
   );
@@ -109,11 +146,11 @@ const mapStateToProps = (state) => {
     name: state.firebase.auth.displayName || state.auth.name,
     uid: state.firebase.auth.uid,
     message: state.ads.message,
+    adsError: state.ads.adsError,
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    clearMessage: () => dispatch(clearMessage()),
     deleteAd: (item) => dispatch(deleteAd(item)),
   };
 };
