@@ -36,10 +36,10 @@ function App(props) {
         <Route path="/about" component={About} />
         <Route path="/contact" component={Contact} />
         <Route path="/profile" component={Profile} />
-        <Route path="/view-category" component={ViewCategory} />
+        <Route path="/view-category/:category" component={ViewCategory} />
         <Route path="/ad-detail/:id" component={AdDetail} />
-        <Route path="/" exact component={Home} />
-        <Route path="/" component={NotFound} />
+        <Route path="/" component={Home} />
+        {/* <Route path="/" component={NotFound} /> */}
       </Switch>
     );
   } else {
@@ -48,10 +48,10 @@ function App(props) {
         <Route path="/about" component={About} />
         <Route path="/contact" component={Contact} />
         <Route path="/account" component={Account} />
-        <Route path="/view-category" component={ViewCategory} />
+        <Route path="/view-category/:category" component={ViewCategory} />
         <Route path="/ad-detail/:id" component={AdDetail} />
-        <Route path="/" exact component={Home} />
-        <Route path="/" component={NotFound} />
+        <Route path="/" component={Home} />
+        {/* <Route path="/" component={NotFound} /> */}
       </Switch>
     );
   }
