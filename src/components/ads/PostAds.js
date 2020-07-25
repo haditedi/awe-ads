@@ -38,7 +38,7 @@ const PostAds = ({ postAds }) => {
     setState((prevState) => {
       return {
         ...prevState,
-        [name]: value.toLowerCase(),
+        [name]: value,
       };
     });
   };
@@ -174,7 +174,9 @@ const PostAds = ({ postAds }) => {
               onChange={handleChange}
             />
             {numLetter > 1 && (
-              <div style={style}>Maximum 20 letters. {numLetter} left.</div>
+              <div style={{ ...style, color: "blue" }}>
+                Maximum 20 letters. {numLetter} left.
+              </div>
             )}
 
             <TextArea

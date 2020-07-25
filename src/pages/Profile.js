@@ -13,33 +13,60 @@ const Profile = ({ name, uid, message, deleteAd, adsError }) => {
   const [state, setState] = useState({
     postAds: false,
     data: [],
+    loading: true,
+    localError: "",
+    empty: false,
   });
-  const [loading, setLoading] = useState(true);
+
   const success = useRef(null);
 
   useEffect(() => {
+    console.log("EFFECT");
     axios
       .get(`/get-ads/${uid}`)
       .then((res) => {
         const doc = res.data;
-
+        if (doc.data.result.length === 0) {
+          setState((prevValue) => {
+            return {
+              ...prevValue,
+              empty: true,
+              loading: false,
+              postAds: false,
+            };
+          });
+        } else {
+          setState((prevValue) => {
+            return {
+              ...prevValue,
+              data: doc.data.result,
+              loading: false,
+              empty: false,
+              postAds: false,
+            };
+          });
+        }
+      })
+      .catch(() => {
         setState((prevValue) => {
           return {
             ...prevValue,
-            data: doc.data.result,
+            postAds: false,
+            loading: false,
+            localError: "Sorry, something went wrong...",
           };
         });
-
-        setLoading(false);
-      })
-      .catch((err) => console.log(err));
-    setLoading(true);
-    setState((prevValue) => {
-      return {
-        ...prevValue,
-        postAds: false,
-      };
-    });
+        setTimeout(() => {
+          setState((prevValue) => {
+            return {
+              ...prevValue,
+              postAds: false,
+              loading: false,
+              localError: "",
+            };
+          });
+        }, 2000);
+      });
 
     if (message || adsError) {
       success.current.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -54,8 +81,7 @@ const Profile = ({ name, uid, message, deleteAd, adsError }) => {
       };
     });
   };
-  console.log(state.postAds);
-
+  console.log(state);
   return (
     <Display>
       <motion.div
@@ -104,6 +130,17 @@ const Profile = ({ name, uid, message, deleteAd, adsError }) => {
               <Result status="error" title={adsError} />
             </motion.div>
           )}
+          {state.localError && (
+            <motion.div
+              key="error"
+              variants={heroVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+            >
+              <Result status="warning" title={state.localError} />
+            </motion.div>
+          )}
 
           {state.postAds ? (
             <motion.div
@@ -125,12 +162,7 @@ const Profile = ({ name, uid, message, deleteAd, adsError }) => {
             >
               <Row style={{ marginTop: "35px" }}>
                 <Col>
-                  <AdsSummary
-                    state={state.data}
-                    loading={loading}
-                    uid={uid}
-                    deleteAd={deleteAd}
-                  />
+                  <AdsSummary state={state} uid={uid} deleteAd={deleteAd} />
                 </Col>
               </Row>
             </motion.div>

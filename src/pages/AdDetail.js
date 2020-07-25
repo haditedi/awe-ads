@@ -26,22 +26,14 @@ const AdsDetail = (props) => {
         <section>
           <Row>
             <Col>
-              <Card>
-                <Meta
-                  description={
-                    <CardAdDetail
-                      location={state.location}
-                      price={state.price}
-                      description={state.description}
-                    />
-                  }
-                />
+              <Card style={{ paddingBottom: "20px" }}>
+                <Meta description={<CardAdDetail state={state} />} />
               </Card>
             </Col>
           </Row>
         </section>
         <section>
-          <Row>
+          <Row style={{ marginTop: "20px" }}>
             {state.imageUrl.map((el) => {
               return (
                 <Col key={el.url} style={{ marginTop: "20px" }}>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col, Card, Skeleton, Button } from "antd";
+import { Row, Col, Card, Skeleton, Button, Empty } from "antd";
 import CardBody from "./CardBody";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
@@ -9,12 +9,18 @@ dayjs.extend(relativeTime);
 
 const { Meta } = Card;
 
-const AdsSummary = ({ state, loading, uid, deleteAd }) => {
+const AdsSummary = ({ state, uid, deleteAd }) => {
   return (
     <section>
-      {loading && <Skeleton active />}
+      {state.loading && <Skeleton active />}
       <Row gutter={[16, 16]}>
-        {state.map((el) => {
+        {state.empty && (
+          <Empty
+            style={{ marginTop: "20px" }}
+            description="No posting at the moment"
+          />
+        )}
+        {state.data.map((el) => {
           let now = dayjs(el.createdAt);
           return (
             <Col key={el._id}>
@@ -22,7 +28,7 @@ const AdsSummary = ({ state, loading, uid, deleteAd }) => {
               <Link
                 to={{
                   pathname: `/ad-detail/${el._id}`,
-                  state: { ...el, uid },
+                  state: { ...el, uid, datePosted: now.fromNow() },
                 }}
               >
                 <Card

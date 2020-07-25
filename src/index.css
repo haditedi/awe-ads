@@ -28,11 +28,16 @@ h3 {
   font-size: 2em;
   color: #817f7f;
 }
+h4 {
+  font-size: 1.8em;
+  color: #817f7f;
+}
 h5 {
   color: #817f7f;
 }
 p {
   font-size: 1.5em;
+  margin: 0;
 }
 
 /* ----------------------------------------------
@@ -75,5 +80,25 @@ p {
     -webkit-transform: rotateY(0deg) translateY(0) skewY(0deg);
     transform: rotateY(0deg) translateY(0) skewY(0deg);
     opacity: 1;
+  }
+}
+
+@media (max-width: 370px) {
+  h1 {
+    font-size: 2em;
+  }
+  h2 {
+    font-size: 1.5em;
+  }
+  h3 {
+    font-size: 1.2em;
+  }
+  h4 {
+    font-size: 1em;
+  }
+
+  p {
+    font-size: 0.8em;
+    margin: 0;
   }
 }

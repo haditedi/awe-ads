@@ -6,27 +6,21 @@ import { Link } from "react-router-dom";
 
 const { Meta } = Card;
 
-const Category = ({ state }) => {
+const Category = () => {
   return (
     <section>
       <Row gutter={[16, 16]}>
         <Col>
           <Link
             to={{
-              pathname: "/view-category",
+              pathname: `/view-category/car`,
               state: { category: "car" },
             }}
           >
             <Card
               style={{ width: 300, height: 270 }}
               hoverable
-              cover={
-                <img
-                  //style={{ width: "80%" }}
-                  alt="car category"
-                  src={carCategory}
-                />
-              }
+              cover={<img alt="car category" src={carCategory} />}
             >
               <Meta title="CAR" />
             </Card>
@@ -36,7 +30,7 @@ const Category = ({ state }) => {
         <Col>
           <Link
             to={{
-              pathname: "/view-category",
+              pathname: `/view-category/others`,
               state: { category: "others" },
             }}
           >

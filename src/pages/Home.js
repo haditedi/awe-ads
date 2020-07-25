@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { heroVariants } from "../config/motion";
 import awAds from "../images/aw-ads.svg";
 import couple from "../images/couple.svg";
-import { Row, Col, Skeleton } from "antd";
+import { Row, Col } from "antd";
 import AdsSummary from "../components/ads/AdsSummary";
 import Display from "../components/Display";
 import HeadingText from "../components/HeadingText";
@@ -13,19 +13,25 @@ import axios from "axios";
 import classes from "./home.module.css";
 
 const Home = () => {
-  const [state, setState] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [state, setState] = useState({
+    data: [],
+    loading: true,
+  });
   console.log(state);
   useEffect(() => {
     axios
       .get("/get-ads")
       .then((res) => {
         const doc = res.data;
-
-        doc.data.result.forEach((el) => {
-          setState((prevValue) => [...prevValue, el]);
+        let result = doc.data.result.map((el) => el);
+        console.log(result);
+        setState((prevValue) => {
+          return {
+            ...prevValue,
+            data: result,
+            loading: false,
+          };
         });
-        setLoading(false);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -57,13 +63,12 @@ const Home = () => {
           </Row>
         </motion.section>
 
-        {loading && <Skeleton active />}
-
         <HeadingText text="Category" />
         <Category state={state} />
 
         <HeadingText text="Latest Post" />
-        <AdsSummary state={state} loading={loading} />
+
+        <AdsSummary state={state} />
       </div>
     </Display>
   );

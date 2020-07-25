@@ -8,7 +8,7 @@ import Profile from "./pages/Profile";
 import AdDetail from "./pages/AdDetail";
 import ViewCategory from "./pages/ViewCategory";
 import { connect } from "react-redux";
-import NotFound from "./pages/NotFound";
+
 import firebase from "./config/fbConfig";
 import axios from "axios";
 import { AnimatePresence } from "framer-motion";
@@ -26,7 +26,8 @@ function App(props) {
       });
   }
 
-  axios.defaults.baseURL = "https://dazzling-zion-41313.herokuapp.com/";
+  //axios.defaults.baseURL = "https://dazzling-zion-41313.herokuapp.com";
+  axios.defaults.baseURL = "http://localhost:5000";
   axios.defaults.headers.common["Authorization"] = token;
 
   let routes;
@@ -39,7 +40,6 @@ function App(props) {
         <Route path="/view-category/:category" component={ViewCategory} />
         <Route path="/ad-detail/:id" component={AdDetail} />
         <Route path="/" component={Home} />
-        {/* <Route path="/" component={NotFound} /> */}
       </Switch>
     );
   } else {
@@ -51,7 +51,6 @@ function App(props) {
         <Route path="/view-category/:category" component={ViewCategory} />
         <Route path="/ad-detail/:id" component={AdDetail} />
         <Route path="/" component={Home} />
-        {/* <Route path="/" component={NotFound} /> */}
       </Switch>
     );
   }
