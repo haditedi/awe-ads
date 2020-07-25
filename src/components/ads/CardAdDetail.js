@@ -12,13 +12,9 @@ const CardAdDetail = ({ state }) => {
               maxWidth: "900px",
             }}
           >
-            <Divider orientation="left">
-              <h3 style={{ textTransform: "capitalize", margin: "0" }}>
-                {state.title}
-              </h3>
-            </Divider>
             <h4>{state.description}</h4>
-            <p>Price: {state.price}</p>
+            <Divider />
+            <p>Price: £ {state.price}</p>
             <p style={{ textTransform: "capitalize" }}>
               Location: {state.location}
             </p>

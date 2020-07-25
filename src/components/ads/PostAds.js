@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Input, Button, Row, Col, Select, InputNumber } from "antd";
+import { Input, Button, Row, Col, Select, InputNumber, Spin } from "antd";
 import { connect } from "react-redux";
 import { postAds } from "../../store/actions/adsActions";
 import ErrorAlert from "../ErrorAlert";
@@ -249,14 +249,7 @@ const PostAds = ({ postAds }) => {
             )}
 
             {state.loading ? (
-              <Button
-                loading="true"
-                style={{ marginTop: "20px" }}
-                type="primary"
-                htmlType="submit"
-              >
-                Submit
-              </Button>
+              <Spin style={{ marginTop: "20px" }} />
             ) : (
               <Button
                 style={{ marginTop: "20px" }}
