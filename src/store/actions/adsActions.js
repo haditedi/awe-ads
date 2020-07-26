@@ -38,7 +38,11 @@ export const postAds = (ads) => {
               uploadTask.snapshot.ref
                 .getDownloadURL()
                 .then(function (downloadURL) {
-                  data.imageUrl.push({ url: downloadURL, alt: el.alt });
+                  data.imageUrl.push({
+                    url: downloadURL,
+                    alt: el.alt,
+                    primary: el.primary,
+                  });
                   imageLength--;
                   console.log(imageLength);
                   if (progress === 100 && imageLength === 0) {

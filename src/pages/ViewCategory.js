@@ -5,11 +5,12 @@ import Display from "../components/Display";
 import HeadingText from "../components/HeadingText";
 import AdsSummary from "../components/ads/AdsSummary";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 import { Result } from "antd";
 
-const ViewCategory = (props) => {
-  const location = props.location.state;
-
+const ViewCategory = () => {
+  const { category } = useParams();
+  console.log(category);
   const [state, setState] = useState({
     data: [],
     empty: false,
@@ -19,7 +20,7 @@ const ViewCategory = (props) => {
 
   useEffect(() => {
     axios
-      .get(`/get-ads?category=${location.category}`)
+      .get(`/get-ads?category=${category}`)
       .then((res) => {
         const result = res.data.data.result;
         console.log(result);
@@ -53,7 +54,7 @@ const ViewCategory = (props) => {
           };
         });
       });
-  }, [location.category]);
+  }, [category]);
 
   return (
     <Display>
@@ -69,7 +70,7 @@ const ViewCategory = (props) => {
       >
         <HeadingText
           style={{ textTransform: "capitalize" }}
-          text={`Category ${location.category}`}
+          text={`Category ${category}`}
         />
         <AdsSummary state={state} />
       </motion.div>

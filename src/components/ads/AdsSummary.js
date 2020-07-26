@@ -21,6 +21,15 @@ const AdsSummary = ({ state, uid, deleteAd }) => {
           />
         )}
         {state.data.map((el) => {
+          console.log(el);
+          let src = el.imageUrl[0].url;
+          if (el.imageUrl.length > 1) {
+            el.imageUrl.forEach((main) => {
+              if (main.primary) {
+                src = main.url;
+              }
+            });
+          }
           let now = dayjs(el.createdAt);
           return (
             <Col key={el._id}>
@@ -34,7 +43,7 @@ const AdsSummary = ({ state, uid, deleteAd }) => {
                 <Card
                   style={{ width: 240, height: 350 }}
                   hoverable
-                  cover={<img alt={el.alt} src={el.imageUrl[0].url} />}
+                  cover={<img alt={el.alt} src={src} />}
                 >
                   <Meta
                     title={el.title}
@@ -49,15 +58,20 @@ const AdsSummary = ({ state, uid, deleteAd }) => {
                 </Card>
               </Link>
               {uid === el.userId && (
-                <Button
-                  onClick={() => deleteAd(el)}
-                  style={{ margin: "10px" }}
-                  size="small"
-                  type="dashed"
-                  danger
-                >
-                  Delete
-                </Button>
+                <div>
+                  <Button style={{ margin: "10px" }} size="small" type="dashed">
+                    Edit
+                  </Button>
+                  <Button
+                    onClick={() => deleteAd(el)}
+                    style={{ margin: "10px" }}
+                    size="small"
+                    type="dashed"
+                    danger
+                  >
+                    Delete
+                  </Button>
+                </div>
               )}
             </Col>
           );

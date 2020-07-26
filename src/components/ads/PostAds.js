@@ -22,6 +22,7 @@ const PostAds = ({ postAds }) => {
     price: 0,
     location: "",
     contact: "",
+    radio: "",
   });
   const [numLetter, setNumLetter] = useState(0);
 
@@ -110,6 +111,25 @@ const PostAds = ({ postAds }) => {
         ...prevState,
         tmpUrl: objectUrl,
         image: images,
+      };
+    });
+  };
+
+  const handleRadio = (e) => {
+    e.preventDefault();
+    let result = state.image.map((el) => {
+      console.log(el);
+      if (el.alt === e.target.value) {
+        el.primary = true;
+      } else {
+        el.primary = false;
+      }
+      return el;
+    });
+    setState((prevState) => {
+      return {
+        ...prevState,
+        image: result,
       };
     });
   };
@@ -226,24 +246,26 @@ const PostAds = ({ postAds }) => {
               multiple
               onChange={handleFiles}
             />
+
             {state.tmpUrl &&
               state.tmpUrl.map((el) => {
                 return (
                   <div
-                    key={el.tmpUrl}
-                    style={{
-                      marginTop: "10px",
-                      display: "block",
-                    }}
+                    style={{ marginTop: "20px" }}
+                    key={el.alt}
+                    onChange={handleRadio}
                   >
+                    <input type="radio" name="radio" value={el.alt} /> Primary
+                    Photo
                     <img
                       src={el.tmpUrl}
-                      style={{ maxWidth: "50vw" }}
+                      style={{ marginLeft: "10px", maxWidth: "50vw" }}
                       alt="preview"
                     />
                   </div>
                 );
               })}
+
             {state.error && (
               <ErrorAlert style={{ marginTop: "20px" }} error={state.error} />
             )}
