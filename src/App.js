@@ -7,6 +7,7 @@ import Account from "./pages/Account";
 import Profile from "./pages/Profile";
 import AdDetail from "./pages/AdDetail";
 import ViewCategory from "./pages/ViewCategory";
+import Search from "./pages/Search";
 import { connect } from "react-redux";
 
 import firebase from "./config/fbConfig";
@@ -26,8 +27,8 @@ function App(props) {
       });
   }
 
-  axios.defaults.baseURL = "https://dazzling-zion-41313.herokuapp.com";
-  // axios.defaults.baseURL = "http://localhost:5000";
+  // axios.defaults.baseURL = "https://dazzling-zion-41313.herokuapp.com";
+  axios.defaults.baseURL = "http://localhost:5000";
   axios.defaults.headers.common["Authorization"] = token;
 
   let routes;
@@ -37,6 +38,7 @@ function App(props) {
         <Route path="/about" component={About} />
         <Route path="/contact" component={Contact} />
         <Route path="/profile" component={Profile} />
+        <Route path="/search" component={Search} />
         <Route path="/view-category/:category" component={ViewCategory} />
         <Route path="/ad-detail/:id" component={AdDetail} />
         <Route path="/" component={Home} />
@@ -48,6 +50,7 @@ function App(props) {
         <Route path="/about" component={About} />
         <Route path="/contact" component={Contact} />
         <Route path="/account" component={Account} />
+        <Route path="/search" component={Search} />
         <Route path="/view-category/:category" component={ViewCategory} />
         <Route path="/ad-detail/:id" component={AdDetail} />
         <Route path="/" component={Home} />

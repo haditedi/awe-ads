@@ -9,10 +9,11 @@ import AdsSummary from "../components/ads/AdsSummary";
 import Display from "../components/Display";
 import HeadingText from "../components/HeadingText";
 import Category from "../components/Category";
+import SearchBar from "../components/SearchBar";
 import axios from "axios";
 import classes from "./home.module.css";
 
-const Home = () => {
+const Home = (props) => {
   const [state, setState] = useState({
     data: [],
     loading: true,
@@ -62,7 +63,7 @@ const Home = () => {
             </Col>
           </Row>
         </motion.section>
-
+        <SearchBar history={props.history} />
         <HeadingText text="Category" />
         <Category state={state} />
 

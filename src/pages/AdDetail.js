@@ -10,7 +10,7 @@ const { Meta } = Card;
 
 const AdsDetail = (props) => {
   const state = props.location.state;
-  console.log(props);
+
   return (
     <Display>
       <motion.div

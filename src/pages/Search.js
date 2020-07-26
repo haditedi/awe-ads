@@ -1,80 +1,78 @@
 import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { heroVariants } from "../config/motion";
 import Display from "../components/Display";
 import HeadingText from "../components/HeadingText";
+import SearchBar from "../components/SearchBar";
 import AdsSummary from "../components/ads/AdsSummary";
+import { Skeleton, Result } from "antd";
 import axios from "axios";
-import { Result } from "antd";
+import { motion } from "framer-motion";
+import { heroVariants } from "../config/motion";
 
-const ViewCategory = (props) => {
-  const location = props.location.state;
-
+const Search = ({ location, history }) => {
+  console.log(history);
   const [state, setState] = useState({
     data: [],
     empty: false,
     loading: true,
-    error: false,
+    localError: false,
   });
 
   useEffect(() => {
+    console.log("EFFECT");
     axios
-      .get(`/get-ads?category=${location.category}`)
+      .get(`/search-ads${location.search}`)
       .then((res) => {
         const result = res.data.data.result;
         console.log(result);
-
         if (result.length > 0) {
-          setState((prevState) => {
+          setState((prevValue) => {
             return {
-              ...prevState,
-              empty: false,
-              data: result,
+              ...prevValue,
               loading: false,
+              data: result,
             };
           });
         } else {
-          setState((prevState) => {
+          setState((prevValue) => {
             return {
-              ...prevState,
-              empty: true,
-              data: result,
+              ...prevValue,
               loading: false,
+              empty: true,
             };
           });
         }
       })
-      .catch(() => {
-        setState((prevState) => {
+      .catch((err) => {
+        setState((prevValue) => {
           return {
-            ...prevState,
+            ...prevValue,
             loading: false,
-            error: true,
+            localError: "Sorry something went wrong",
           };
         });
       });
-  }, [location.category]);
+  }, [location.search]);
 
   return (
     <Display>
-      {state.error && (
-        <Result status="warning" title="Sorry something went wrong,,," />
-      )}
-
       <motion.div
         variants={heroVariants}
         initial="hidden"
         animate="visible"
         exit="exit"
       >
-        <HeadingText
-          style={{ textTransform: "capitalize" }}
-          text={`Category ${location.category}`}
-        />
+        <SearchBar history={history} />
+        <HeadingText text="Search Result" />
+
+        {state.loading && <Skeleton />}
+
+        {state.localError && (
+          <Result status="warning" title={state.localError} />
+        )}
         <AdsSummary state={state} />
       </motion.div>
     </Display>
   );
 };
 
-export default ViewCategory;
+export default Search;
