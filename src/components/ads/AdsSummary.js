@@ -4,6 +4,7 @@ import CardBody from "./CardBody";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import CardTitle from "../CardTitle";
 
 dayjs.extend(relativeTime);
 
@@ -21,7 +22,6 @@ const AdsSummary = ({ state, uid, deleteAd }) => {
           />
         )}
         {state.data.map((el) => {
-          console.log(el);
           let src = el.imageUrl[0].url;
           if (el.imageUrl.length > 1) {
             el.imageUrl.forEach((main) => {
@@ -46,7 +46,7 @@ const AdsSummary = ({ state, uid, deleteAd }) => {
                   cover={<img alt={el.alt} src={src} />}
                 >
                   <Meta
-                    title={el.title}
+                    title={<CardTitle title={el.title} />}
                     description={
                       <CardBody
                         location={el.location}
