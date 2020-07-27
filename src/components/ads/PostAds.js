@@ -1,7 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import { Input, Button, Row, Col, Select, InputNumber, Spin } from "antd";
-import { connect } from "react-redux";
-import { postAds } from "../../store/actions/adsActions";
 import ErrorAlert from "../ErrorAlert";
 
 const { TextArea } = Input;
@@ -10,163 +8,16 @@ const style = {
   marginBottom: "20px",
 };
 
-const PostAds = ({ postAds }) => {
-  const [state, setState] = useState({
-    title: "",
-    description: "",
-    tmpUrl: [],
-    image: "",
-    loading: false,
-    error: "",
-    category: "",
-    price: 0,
-    location: "",
-    contact: "",
-    radio: "",
-  });
-  const [numLetter, setNumLetter] = useState(0);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    if (name === "title") {
-      const remainingLetter = 20 - value.length;
-      setNumLetter(remainingLetter);
-      if (remainingLetter === 0) return;
-    } else {
-      setNumLetter(0);
-    }
-
-    setState((prevState) => {
-      return {
-        ...prevState,
-        [name]: value,
-      };
-    });
-  };
-  const handleCategory = (e) => {
-    setState((prevState) => {
-      return {
-        ...prevState,
-        category: e,
-      };
-    });
-  };
-  const handleNumber = (e) => {
-    setState((prevState) => {
-      return {
-        ...prevState,
-        price: e,
-      };
-    });
-  };
-  console.log(state);
-
-  const handleFiles = (e) => {
-    let files = Array.from(e.target.files);
-
-    if (files.length > 3) {
-      setState((prevState) => {
-        return {
-          ...prevState,
-          error: "Maximum 3 images allowed",
-        };
-      });
-      return clearError();
-    }
-
-    let objectUrl = [];
-    let images = files.map((file) => {
-      if (file.size > 2000000) {
-        setState((prevState) => {
-          return {
-            ...prevState,
-            error: "file too big. Max size is 2 mb / image.",
-          };
-        });
-        return clearError();
-      }
-
-      if (
-        file.type !== "image/png" &&
-        file.type !== "image/jpg" &&
-        file.type !== "image/jpeg"
-      ) {
-        setState((prevState) => {
-          return {
-            ...prevState,
-            error: `${file.name} type not supported. Only support .jpg and .png`,
-          };
-        });
-        return clearError();
-      }
-
-      let alt = file.name.split(".")[0];
-      objectUrl.push({ tmpUrl: URL.createObjectURL(file), alt });
-
-      return { file, alt };
-    });
-
-    setState((prevState) => {
-      return {
-        ...prevState,
-        tmpUrl: objectUrl,
-        image: images,
-      };
-    });
-  };
-
-  const handleRadio = (e) => {
-    e.preventDefault();
-    let result = state.image.map((el) => {
-      console.log(el);
-      if (el.alt === e.target.value) {
-        el.primary = true;
-      } else {
-        el.primary = false;
-      }
-      return el;
-    });
-    setState((prevState) => {
-      return {
-        ...prevState,
-        image: result,
-      };
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    setState((prevState) => {
-      return {
-        ...prevState,
-        loading: true,
-      };
-    });
-    postAds(state)
-      .then(() => {
-        console.log("ads posted");
-        setState((prevState) => {
-          return {
-            ...prevState,
-            loading: false,
-          };
-        });
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const clearError = () => {
-    setTimeout(() => {
-      setState((prevState) => {
-        return {
-          ...prevState,
-          error: "",
-        };
-      });
-    }, 3000);
-  };
-
+const PostAds = ({
+  state,
+  handleChange,
+  handleCategory,
+  handleNumber,
+  handleFiles,
+  handleRadio,
+  handleSubmit,
+  numLetter,
+}) => {
   console.log(state);
 
   return (
@@ -288,10 +139,4 @@ const PostAds = ({ postAds }) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    postAds: (form) => dispatch(postAds(form)),
-  };
-};
-
-export default connect(null, mapDispatchToProps)(PostAds);
+export default PostAds;

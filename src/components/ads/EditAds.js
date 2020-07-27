@@ -1,14 +1,6 @@
 import React from "react";
-import {
-  Row,
-  Col,
-  Input,
-  InputNumber,
-  Select,
-  ErrorAlert,
-  Spin,
-  Button,
-} from "antd";
+import { Row, Col, Input, InputNumber, Select, Spin, Button } from "antd";
+import ErrorAlert from "../ErrorAlert";
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -16,13 +8,21 @@ const style = {
   marginBottom: "20px",
 };
 
-const EditAds = ({ state }) => {
+const EditAds = ({
+  state,
+  handleChange,
+  handleCategory,
+  handleNumber,
+  handleSubmit,
+  numLetter,
+}) => {
+  console.log(state);
   return (
-    <section>
-      <Row>
-        <Col>
+    <section style={{ marginTop: "50px" }}>
+      <Row justify="center" align="bottom">
+        <Col xs={24} sm={18} lg={12} xl={8}>
           <form onSubmit={handleSubmit}>
-            <h3 style={style}>Post Ads</h3>
+            <h3 style={style}>Edit Ads</h3>
             <Select
               name="category"
               style={{ width: 150, marginBottom: "20px" }}
@@ -82,17 +82,6 @@ const EditAds = ({ state }) => {
               required
               value={state.location}
               onChange={handleChange}
-            />
-            <span>
-              Use "Ctrl + Click" to select multiple images. Max 3 images with
-              less than 2 mb each.
-            </span>
-            <Input
-              required
-              type="file"
-              name="files"
-              multiple
-              onChange={handleFiles}
             />
 
             {state.error && (

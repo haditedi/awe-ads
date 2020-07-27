@@ -4,24 +4,36 @@ import { connect } from "react-redux";
 import { Row, Col, Result, Button } from "antd";
 import PostAds from "../components/ads/PostAds";
 import AdsSummary from "../components/ads/AdsSummary";
-import { deleteAd } from "../store/actions/adsActions";
+import EditAds from "../components/ads/EditAds";
+import { deleteAd, postAds } from "../store/actions/adsActions";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import { heroVariants } from "../config/motion";
 
-const Profile = ({ name, uid, message, deleteAd, adsError }) => {
+const Profile = ({ name, uid, message, deleteAd, adsError, postAds }) => {
   const [state, setState] = useState({
-    postAds: false,
+    showPostAds: false,
+    showEditAds: false,
     data: [],
     loading: true,
     localError: "",
     empty: false,
+    title: "",
+    description: "",
+    tmpUrl: [],
+    image: "",
+    error: "",
+    category: "",
+    price: 0,
+    location: "",
+    contact: "",
+    radio: "",
   });
+  const [numLetter, setNumLetter] = useState(0);
 
   const success = useRef(null);
 
   useEffect(() => {
-    console.log("EFFECT");
     axios
       .get(`/get-ads/${uid}`)
       .then((res) => {
@@ -60,8 +72,6 @@ const Profile = ({ name, uid, message, deleteAd, adsError }) => {
           setState((prevValue) => {
             return {
               ...prevValue,
-              postAds: false,
-              loading: false,
               localError: "",
             };
           });
@@ -73,14 +83,221 @@ const Profile = ({ name, uid, message, deleteAd, adsError }) => {
     }
   }, [message, adsError, uid]);
 
-  const handlePostAds = () => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name === "title") {
+      const remainingLetter = 20 - value.length;
+      setNumLetter(remainingLetter);
+      if (remainingLetter === 0) return;
+    } else {
+      setNumLetter(0);
+    }
+
     setState((prevState) => {
       return {
         ...prevState,
-        postAds: !state.postAds,
+        [name]: value,
       };
     });
   };
+
+  const handleCategory = (e) => {
+    setState((prevState) => {
+      return {
+        ...prevState,
+        category: e,
+      };
+    });
+  };
+
+  const handleNumber = (e) => {
+    setState((prevState) => {
+      return {
+        ...prevState,
+        price: e,
+      };
+    });
+  };
+
+  const handleFiles = (e) => {
+    let files = Array.from(e.target.files);
+
+    if (files.length > 3) {
+      setState((prevState) => {
+        return {
+          ...prevState,
+          error: "Maximum 3 images allowed",
+        };
+      });
+      return clearError();
+    }
+
+    let objectUrl = [];
+    let images = files.map((file) => {
+      if (file.size > 2000000) {
+        setState((prevState) => {
+          return {
+            ...prevState,
+            error: "file too big. Max size is 2 mb / image.",
+          };
+        });
+        return clearError();
+      }
+
+      if (
+        file.type !== "image/png" &&
+        file.type !== "image/jpg" &&
+        file.type !== "image/jpeg"
+      ) {
+        setState((prevState) => {
+          return {
+            ...prevState,
+            error: `${file.name} type not supported. Only support .jpg and .png`,
+          };
+        });
+        return clearError();
+      }
+
+      let alt = file.name.split(".")[0];
+      objectUrl.push({ tmpUrl: URL.createObjectURL(file), alt });
+
+      return { file, alt };
+    });
+
+    setState((prevState) => {
+      return {
+        ...prevState,
+        tmpUrl: objectUrl,
+        image: images,
+      };
+    });
+  };
+
+  const handleRadio = (e) => {
+    e.preventDefault();
+    let result = state.image.map((el) => {
+      console.log(el);
+      if (el.alt === e.target.value) {
+        el.primary = true;
+      } else {
+        el.primary = false;
+      }
+      return el;
+    });
+    setState((prevState) => {
+      return {
+        ...prevState,
+        image: result,
+      };
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    setState((prevState) => {
+      return {
+        ...prevState,
+        loading: true,
+      };
+    });
+    postAds(state)
+      .then(() => {
+        console.log("ads posted");
+        setState((prevState) => {
+          return {
+            ...prevState,
+            showPostAds: false,
+            data: [],
+            loading: true,
+            localError: "",
+            empty: false,
+            title: "",
+            description: "",
+            tmpUrl: [],
+            image: "",
+            error: "",
+            category: "",
+            price: 0,
+            location: "",
+            contact: "",
+            radio: "",
+          };
+        });
+      })
+      .catch(() => {
+        setState((prevState) => {
+          return {
+            ...prevState,
+            showPostAds: false,
+            data: [],
+            loading: true,
+            localError: "",
+            empty: false,
+            title: "",
+            description: "",
+            tmpUrl: [],
+            image: "",
+            error: "",
+            category: "",
+            price: 0,
+            location: "",
+            contact: "",
+            radio: "",
+          };
+        });
+      });
+  };
+
+  const clearError = () => {
+    setTimeout(() => {
+      setState((prevState) => {
+        return {
+          ...prevState,
+          error: "",
+        };
+      });
+    }, 3000);
+  };
+
+  const handleShowPostAds = () => {
+    setState((prevState) => {
+      return {
+        ...prevState,
+        showPostAds: !state.showPostAds,
+        showEditAds: false,
+      };
+    });
+  };
+
+  const handleEditAds = (ads) => {
+    console.log(ads);
+    setState((prevState) => {
+      return {
+        ...prevState,
+        title: ads.title,
+        description: ads.description,
+        showEditAds: !state.showEditAds,
+        category: ads.category,
+        price: ads.price,
+        location: ads.location,
+        contact: ads.contact,
+        showPostAds: false,
+      };
+    });
+    success.current.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+  const handleEditSubmit = (e) => {
+    e.preventDefault();
+
+    setState((prevState) => {
+      return {
+        ...prevState,
+        loading: true,
+      };
+    });
+  };
+
   console.log(state);
   return (
     <Display>
@@ -100,9 +317,14 @@ const Profile = ({ name, uid, message, deleteAd, adsError }) => {
             </h1>
           </Col>
         </Row>
-        <Row>
+        <Row justify="center">
           <Col>
-            <Button type="primary" shape="round" onClick={handlePostAds}>
+            <Button
+              style={{ marginRight: "20px" }}
+              type="primary"
+              shape="round"
+              onClick={handleShowPostAds}
+            >
               Post Ads
             </Button>
           </Col>
@@ -142,7 +364,7 @@ const Profile = ({ name, uid, message, deleteAd, adsError }) => {
             </motion.div>
           )}
 
-          {state.postAds ? (
+          {state.showEditAds && (
             <motion.div
               key="postAds"
               variants={heroVariants}
@@ -150,7 +372,39 @@ const Profile = ({ name, uid, message, deleteAd, adsError }) => {
               animate="visible"
               exit="exit"
             >
-              <PostAds />
+              <EditAds
+                state={state}
+                handleChange={handleChange}
+                handleCategory={handleCategory}
+                handleNumber={handleNumber}
+                handleFiles={handleFiles}
+                handleRadio={handleRadio}
+                handleSubmit={handleSubmit}
+                clearError={clearError}
+                numLetter={numLetter}
+              />
+            </motion.div>
+          )}
+
+          {state.showPostAds ? (
+            <motion.div
+              key="postAds"
+              variants={heroVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+            >
+              <PostAds
+                handleChange={handleChange}
+                handleCategory={handleCategory}
+                handleNumber={handleNumber}
+                handleFiles={handleFiles}
+                handleRadio={handleRadio}
+                handleSubmit={handleSubmit}
+                clearError={clearError}
+                numLetter={numLetter}
+                state={state}
+              />
             </motion.div>
           ) : (
             <motion.div
@@ -162,7 +416,12 @@ const Profile = ({ name, uid, message, deleteAd, adsError }) => {
             >
               <Row style={{ marginTop: "35px" }}>
                 <Col>
-                  <AdsSummary state={state} uid={uid} deleteAd={deleteAd} />
+                  <AdsSummary
+                    state={state}
+                    uid={uid}
+                    editAd={handleEditAds}
+                    deleteAd={deleteAd}
+                  />
                 </Col>
               </Row>
             </motion.div>
@@ -184,6 +443,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     deleteAd: (item) => dispatch(deleteAd(item)),
+    postAds: (form) => dispatch(postAds(form)),
   };
 };
 

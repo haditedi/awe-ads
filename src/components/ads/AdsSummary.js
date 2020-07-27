@@ -7,7 +7,7 @@ import { fromNow } from "../../config/fromNow";
 
 const { Meta } = Card;
 
-const AdsSummary = ({ state, uid, deleteAd }) => {
+const AdsSummary = ({ state, uid, deleteAd, editAd }) => {
   return (
     <section>
       {state.loading && <Skeleton active />}
@@ -52,6 +52,7 @@ const AdsSummary = ({ state, uid, deleteAd }) => {
               {uid === el.userId && (
                 <div>
                   <Button
+                    onClick={() => editAd(el)}
                     style={{ margin: "10px 2px" }}
                     size="small"
                     type="dashed"
