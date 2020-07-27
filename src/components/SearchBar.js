@@ -4,7 +4,6 @@ import { Input, Row, Col } from "antd";
 const { Search } = Input;
 
 const SearchBar = ({ history }) => {
-  console.log(history);
   const handleSearch = (param) => {
     history.push({
       pathname: "/search",

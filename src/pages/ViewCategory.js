@@ -23,7 +23,6 @@ const ViewCategory = () => {
       .get(`/get-ads?category=${category}`)
       .then((res) => {
         const result = res.data.data.result;
-        console.log(result);
 
         if (result.length > 0) {
           setState((prevState) => {

@@ -5,15 +5,24 @@ import { Row, Col, Result, Button } from "antd";
 import PostAds from "../components/ads/PostAds";
 import AdsSummary from "../components/ads/AdsSummary";
 import EditAds from "../components/ads/EditAds";
-import { deleteAd, postAds } from "../store/actions/adsActions";
+import { deleteAd, postAds, editAds } from "../store/actions/adsActions";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import { heroVariants } from "../config/motion";
 
-const Profile = ({ name, uid, message, deleteAd, adsError, postAds }) => {
+const Profile = ({
+  name,
+  uid,
+  message,
+  deleteAd,
+  adsError,
+  postAds,
+  editAds,
+}) => {
   const [state, setState] = useState({
     showPostAds: false,
     showEditAds: false,
+    showAdsSummary: true,
     data: [],
     loading: true,
     localError: "",
@@ -28,6 +37,7 @@ const Profile = ({ name, uid, message, deleteAd, adsError, postAds }) => {
     location: "",
     contact: "",
     radio: "",
+    _id: "",
   });
   const [numLetter, setNumLetter] = useState(0);
 
@@ -55,6 +65,7 @@ const Profile = ({ name, uid, message, deleteAd, adsError, postAds }) => {
               loading: false,
               empty: false,
               postAds: false,
+              showAdsSummary: true,
             };
           });
         }
@@ -272,6 +283,7 @@ const Profile = ({ name, uid, message, deleteAd, adsError, postAds }) => {
 
   const handleEditAds = (ads) => {
     console.log(ads);
+
     setState((prevState) => {
       return {
         ...prevState,
@@ -282,23 +294,39 @@ const Profile = ({ name, uid, message, deleteAd, adsError, postAds }) => {
         price: ads.price,
         location: ads.location,
         contact: ads.contact,
+        _id: ads._id,
         showPostAds: false,
       };
     });
     success.current.scrollIntoView({ behavior: "smooth", block: "start" });
   };
+
   const handleEditSubmit = (e) => {
     e.preventDefault();
-
     setState((prevState) => {
       return {
         ...prevState,
         loading: true,
       };
     });
+    editAds(state)
+      .then((resp) => {
+        console.log("SUBMITEDIT", resp);
+      })
+      .catch((err) => {
+        console.log("SUBMITEDIT", err);
+      });
+
+    setState((prevState) => {
+      return {
+        ...prevState,
+        loading: false,
+        showEditAds: false,
+      };
+    });
   };
 
-  console.log(state);
+  // console.log(state);
   return (
     <Display>
       <motion.div
@@ -317,7 +345,7 @@ const Profile = ({ name, uid, message, deleteAd, adsError, postAds }) => {
             </h1>
           </Col>
         </Row>
-        <Row justify="center">
+        <Row>
           <Col>
             <Button
               style={{ marginRight: "20px" }}
@@ -343,7 +371,7 @@ const Profile = ({ name, uid, message, deleteAd, adsError, postAds }) => {
           )}
           {adsError && (
             <motion.div
-              key="error"
+              key="adsError"
               variants={heroVariants}
               initial="hidden"
               animate="visible"
@@ -354,7 +382,7 @@ const Profile = ({ name, uid, message, deleteAd, adsError, postAds }) => {
           )}
           {state.localError && (
             <motion.div
-              key="error"
+              key="localError"
               variants={heroVariants}
               initial="hidden"
               animate="visible"
@@ -382,11 +410,12 @@ const Profile = ({ name, uid, message, deleteAd, adsError, postAds }) => {
                 handleSubmit={handleSubmit}
                 clearError={clearError}
                 numLetter={numLetter}
+                handleEditSubmit={handleEditSubmit}
               />
             </motion.div>
           )}
 
-          {state.showPostAds ? (
+          {state.showPostAds && (
             <motion.div
               key="postAds"
               variants={heroVariants}
@@ -406,7 +435,8 @@ const Profile = ({ name, uid, message, deleteAd, adsError, postAds }) => {
                 state={state}
               />
             </motion.div>
-          ) : (
+          )}
+          {state.showAdsSummary && (
             <motion.div
               key="summ"
               variants={heroVariants}
@@ -444,6 +474,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     deleteAd: (item) => dispatch(deleteAd(item)),
     postAds: (form) => dispatch(postAds(form)),
+    editAds: (ads) => dispatch(editAds(ads)),
   };
 };
 

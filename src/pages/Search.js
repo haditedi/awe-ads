@@ -9,7 +9,6 @@ import { motion } from "framer-motion";
 import { heroVariants } from "../config/motion";
 
 const Search = ({ location, history }) => {
-  console.log(history);
   const [state, setState] = useState({
     data: [],
     empty: false,

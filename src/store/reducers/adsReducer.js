@@ -30,6 +30,16 @@ const adsReducer = (state = initState, action) => {
         ...state,
         adsError: "Sorry, something went wrong. Unable to delete",
       };
+    case "EDIT_ADS_SUCCESS":
+      return {
+        ...state,
+        message: `${action.payload} ads updated`,
+      };
+    case "EDIT_ADS_ERROR":
+      return {
+        ...state,
+        adsError: "Sorry something went wrong. Unable to update",
+      };
 
     default:
       return state;

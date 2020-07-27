@@ -13,7 +13,7 @@ const EditAds = ({
   handleChange,
   handleCategory,
   handleNumber,
-  handleSubmit,
+  handleEditSubmit,
   numLetter,
 }) => {
   console.log(state);
@@ -21,15 +21,18 @@ const EditAds = ({
     <section style={{ marginTop: "50px" }}>
       <Row justify="center" align="bottom">
         <Col xs={24} sm={18} lg={12} xl={8}>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleEditSubmit}>
             <h3 style={style}>Edit Ads</h3>
             <Select
               name="category"
               style={{ width: 150, marginBottom: "20px" }}
               placeholder="Category"
               onChange={handleCategory}
+              defaultValue={state.category}
             >
-              <Option value="car">Car</Option>
+              <Option selected value="car">
+                Car
+              </Option>
               <Option value="others">Other Stuffs</Option>
             </Select>
 
@@ -60,7 +63,7 @@ const EditAds = ({
             <InputNumber
               min={0}
               style={style}
-              defaultValue={0}
+              defaultValue={state.price}
               formatter={(value) =>
                 `£ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
               }
@@ -96,7 +99,7 @@ const EditAds = ({
                 type="primary"
                 htmlType="submit"
               >
-                Submit
+                Update Ads
               </Button>
             )}
           </form>

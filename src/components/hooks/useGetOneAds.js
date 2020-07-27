@@ -9,8 +9,7 @@ const useGetOneAds = (adsId) => {
   };
 
   const { data, status } = useQuery("getOneAds", getAds);
-  console.log(data);
-  console.log(status);
+
   return { data, status };
 };
 

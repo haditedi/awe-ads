@@ -18,7 +18,7 @@ const Home = (props) => {
     data: [],
     loading: true,
   });
-  console.log(state);
+  // console.log(state);
   useEffect(() => {
     axios
       .get("/get-ads")

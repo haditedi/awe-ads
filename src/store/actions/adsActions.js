@@ -82,6 +82,28 @@ export const postAds = (ads) => {
   };
 };
 
+export const editAds = (ads) => {
+  return async (dispatch, getState, { getFirebase }) => {
+    console.log(ads);
+    axios
+      .post(`/edit-ads/${ads._id}`, ads)
+      .then((resp) => {
+        console.log(resp);
+        dispatch({ type: "EDIT_ADS_SUCCESS", payload: ads.title });
+        setTimeout(() => {
+          dispatch({ type: "CLEAR_MESSAGE" });
+        }, 2000);
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatch({ type: "EDIT_ADS_ERROR" });
+        setTimeout(() => {
+          dispatch({ type: "CLEAR_MESSAGE" });
+        }, 2000);
+      });
+  };
+};
+
 export const deleteAd = (item) => {
   return (dispatch, getState, { getFirebase }) => {
     const firebase = getFirebase();
