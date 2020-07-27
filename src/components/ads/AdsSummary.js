@@ -2,11 +2,8 @@ import React from "react";
 import { Row, Col, Card, Skeleton, Button, Empty } from "antd";
 import CardBody from "./CardBody";
 import { Link } from "react-router-dom";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
 import CardTitle from "../CardTitle";
-
-dayjs.extend(relativeTime);
+import { fromNow } from "../../config/fromNow";
 
 const { Meta } = Card;
 
@@ -30,16 +27,11 @@ const AdsSummary = ({ state, uid, deleteAd }) => {
               }
             });
           }
-          let now = dayjs(el.createdAt);
+
           return (
             <Col key={el._id}>
               {" "}
-              <Link
-                to={{
-                  pathname: `/ad-detail/${el._id}`,
-                  state: { ...el, uid, datePosted: now.fromNow() },
-                }}
-              >
+              <Link to={`/ad-detail/${el._id}`}>
                 <Card
                   style={{ width: 240, height: 350 }}
                   hoverable
@@ -51,7 +43,7 @@ const AdsSummary = ({ state, uid, deleteAd }) => {
                       <CardBody
                         location={el.location}
                         price={el.price}
-                        posted={now.fromNow()}
+                        posted={fromNow(el.createdAt)}
                       />
                     }
                   />
@@ -59,12 +51,16 @@ const AdsSummary = ({ state, uid, deleteAd }) => {
               </Link>
               {uid === el.userId && (
                 <div>
-                  <Button style={{ margin: "10px" }} size="small" type="dashed">
+                  <Button
+                    style={{ margin: "10px 2px" }}
+                    size="small"
+                    type="dashed"
+                  >
                     Edit
                   </Button>
                   <Button
                     onClick={() => deleteAd(el)}
-                    style={{ margin: "10px" }}
+                    style={{ margin: "10px 2px" }}
                     size="small"
                     type="dashed"
                     danger

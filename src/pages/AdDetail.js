@@ -2,57 +2,75 @@ import React from "react";
 import Display from "../components/Display";
 import HeadingText from "../components/HeadingText";
 import CardAdDetail from "../components/ads/CardAdDetail";
-import { Row, Col, Card } from "antd";
+import { Row, Col, Card, Skeleton, Result, Button } from "antd";
+import { LeftOutlined } from "@ant-design/icons";
 import { motion } from "framer-motion";
 import { heroVariants } from "../config/motion";
+import useGetOneAds from "../components/hooks/useGetOneAds";
 
 const { Meta } = Card;
 
 const AdsDetail = (props) => {
-  const state = props.location.state;
+  const adsId = props.match.params;
+
+  const { status, data: state } = useGetOneAds(adsId.id);
+  console.log(state);
+
+  const goBack = () => {
+    props.history.goBack();
+  };
 
   return (
     <Display>
-      <motion.div
-        variants={heroVariants}
-        initial="hidden"
-        animate="visible"
-        exit="exit"
-      >
-        <HeadingText
-          style={{ textDecoration: "underline", textTransform: "capitalize" }}
-          text={state.title}
-        />
-        <section>
-          <Row>
-            <Col>
-              <Card style={{ paddingBottom: "20px" }}>
-                <Meta description={<CardAdDetail state={state} />} />
-              </Card>
-            </Col>
-          </Row>
-        </section>
-        <section>
-          <Row style={{ marginTop: "20px" }}>
-            {state.imageUrl.map((el) => {
-              return (
-                <Col key={el.url} style={{ marginTop: "20px" }}>
-                  <img
-                    style={{
-                      boxShadow: "0 0 2px 2px #ddd",
+      {status === "loading" && <Skeleton />}
+      {status === "error" && (
+        <Result status="warning" title="Sorry something went wrong,,," />
+      )}
+      {status === "success" && (
+        <motion.div
+          variants={heroVariants}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+        >
+          <Button onClick={goBack} icon={<LeftOutlined />}>
+            Go Back
+          </Button>
+          <HeadingText
+            style={{ textDecoration: "underline", textTransform: "capitalize" }}
+            text={state.title}
+          />
+          <section>
+            <Row>
+              <Col>
+                <Card style={{ paddingBottom: "20px" }}>
+                  <Meta description={<CardAdDetail state={state} />} />
+                </Card>
+              </Col>
+            </Row>
+          </section>
+          <section>
+            <Row style={{ marginTop: "20px" }}>
+              {state.imageUrl.map((el) => {
+                return (
+                  <Col key={el.url} style={{ marginTop: "20px" }}>
+                    <img
+                      style={{
+                        boxShadow: "0 0 2px 2px #ddd",
 
-                      width: "100%",
-                      maxWidth: "900px",
-                    }}
-                    src={el.url}
-                    alt={el.alt}
-                  />
-                </Col>
-              );
-            })}
-          </Row>
-        </section>
-      </motion.div>
+                        width: "100%",
+                        maxWidth: "900px",
+                      }}
+                      src={el.url}
+                      alt={el.alt}
+                    />
+                  </Col>
+                );
+              })}
+            </Row>
+          </section>
+        </motion.div>
+      )}
     </Display>
   );
 };

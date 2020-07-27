@@ -1,7 +1,9 @@
 import React from "react";
 import { Row, Col, Divider } from "antd";
+import { fromNow } from "../../config/fromNow";
 
 const CardAdDetail = ({ state }) => {
+  console.log(state);
   return (
     <div>
       <Row>
@@ -21,7 +23,7 @@ const CardAdDetail = ({ state }) => {
             <p style={{ textTransform: "capitalize" }}>
               Contact: {state.contact}
             </p>
-            <p>Date Posted: {state.datePosted}</p>
+            <p>Date Posted: {fromNow(state.createdAt)}</p>
           </div>
         </Col>
       </Row>

@@ -8,10 +8,12 @@ export const postAds = (ads) => {
 
     let data = { ...ads, imageUrl: [] };
 
+    // CREATING PROMISE FOR POSTING AT GOOGLE STORAGE
     function getData(param) {
       return new Promise((resolve, reject) => {
         let imageLength = param.image.length;
 
+        // ASSIGNING NEW UNIQUE IMAGE NAME
         param.image.map((el) => {
           let newFileName = el.file.name.split(".");
           let extension = newFileName.pop();
@@ -20,6 +22,7 @@ export const postAds = (ads) => {
           newFileName = newFileName.join("");
           newFileName = newFileName + "." + extension;
 
+          // PERFORM POST IN GOOGLE STORAGE
           let progress;
           const uploadTask = firebase
             .storage()
@@ -56,6 +59,8 @@ export const postAds = (ads) => {
         });
       });
     }
+
+    // PERFORMING BACKEND MONGODB AFTER PROMISE RETURN FROM GOOGLE
     getData(ads)
       .then(() => {
         axios.post("/post-ads", data);
@@ -81,8 +86,8 @@ export const deleteAd = (item) => {
   return (dispatch, getState, { getFirebase }) => {
     const firebase = getFirebase();
     const uid = firebase.auth().currentUser.uid;
-    console.log(uid);
 
+    // GET IMAGE NAME AND NUMBER OF IMAGES
     let url = item.imageUrl.map((el) => {
       return el.url.split("?")[0].split("2F").pop();
     });
