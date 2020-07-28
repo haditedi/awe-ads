@@ -18,8 +18,6 @@ const PostAds = ({
   handleSubmit,
   numLetter,
 }) => {
-  console.log(state);
-
   return (
     <section style={{ marginTop: "50px" }}>
       <Row justify="center" align="bottom">

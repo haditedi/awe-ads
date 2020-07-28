@@ -212,52 +212,26 @@ const Profile = ({
         loading: true,
       };
     });
-    postAds(state)
-      .then(() => {
-        console.log("ads posted");
-        setState((prevState) => {
-          return {
-            ...prevState,
-            showPostAds: false,
-            data: [],
-            loading: true,
-            localError: "",
-            empty: false,
-            title: "",
-            description: "",
-            tmpUrl: [],
-            image: "",
-            error: "",
-            category: "",
-            price: 0,
-            location: "",
-            contact: "",
-            radio: "",
-          };
-        });
-      })
-      .catch(() => {
-        setState((prevState) => {
-          return {
-            ...prevState,
-            showPostAds: false,
-            data: [],
-            loading: true,
-            localError: "",
-            empty: false,
-            title: "",
-            description: "",
-            tmpUrl: [],
-            image: "",
-            error: "",
-            category: "",
-            price: 0,
-            location: "",
-            contact: "",
-            radio: "",
-          };
-        });
-      });
+    postAds(state);
+
+    setState((prevState) => {
+      return {
+        ...prevState,
+        showPostAds: false,
+        data: [],
+        empty: false,
+        title: "",
+        description: "",
+        tmpUrl: [],
+        image: "",
+        error: "",
+        category: "",
+        price: 0,
+        location: "",
+        contact: "",
+        radio: "",
+      };
+    });
   };
 
   const clearError = () => {

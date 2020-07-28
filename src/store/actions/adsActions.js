@@ -7,6 +7,8 @@ export const postAds = (ads) => {
     console.log(uid);
 
     let data = { ...ads, imageUrl: [] };
+    delete data._id;
+    console.log("DATA", data);
 
     // CREATING PROMISE FOR POSTING AT GOOGLE STORAGE
     function getData(param) {
@@ -60,25 +62,23 @@ export const postAds = (ads) => {
       });
     }
 
-    // PERFORMING BACKEND MONGODB AFTER PROMISE RETURN FROM GOOGLE
-    getData(ads)
-      .then(() => {
-        axios.post("/post-ads", data);
-      })
-      .then((resp) => {
-        console.log("ADS POSTED", resp);
+    // PERFORMING BACKEND AFTER PROMISE RETURN FROM GOOGLE
+    try {
+      const resultFirebase = await getData(ads);
+      if (resultFirebase) {
+        await axios.post("/post-ads", data);
         dispatch({ type: "POST_ADS_SUCCESS", payload: ads.title });
         setTimeout(() => {
           dispatch({ type: "CLEAR_MESSAGE" });
         }, 2000);
-      })
-      .catch((err) => {
-        console.log(err);
-        dispatch({ type: "POST_ADS_ERROR", err });
-        setTimeout(() => {
-          dispatch({ type: "CLEAR_MESSAGE" });
-        }, 2000);
-      });
+      }
+    } catch (err) {
+      console.log("ERROR", err);
+      dispatch({ type: "POST_ADS_ERROR", err });
+      setTimeout(() => {
+        dispatch({ type: "CLEAR_MESSAGE" });
+      }, 2000);
+    }
   };
 };
 
@@ -105,7 +105,7 @@ export const editAds = (ads) => {
 };
 
 export const deleteAd = (item) => {
-  return (dispatch, getState, { getFirebase }) => {
+  return async (dispatch, getState, { getFirebase }) => {
     const firebase = getFirebase();
     const uid = firebase.auth().currentUser.uid;
 
@@ -115,6 +115,7 @@ export const deleteAd = (item) => {
     });
     let urlLength = url.length;
 
+    // CREATE PROMISE FOR FIREBASE
     function deleteImage(param) {
       return new Promise((resolve, reject) => {
         param.map((el) => {
@@ -124,7 +125,7 @@ export const deleteAd = (item) => {
             .delete()
             .then(() => {
               urlLength--;
-              console.log(urlLength);
+
               if (urlLength === 0) {
                 resolve("messages deleted");
               }
@@ -135,24 +136,25 @@ export const deleteAd = (item) => {
       });
     }
 
-    deleteImage(url)
-      .then((resp) => {
-        console.log("Success", resp);
-        axios.post("/delete-ad", { _id: item._id });
-      })
-      .then(() => {
-        console.log("axios success");
+    // CONSUME PROMISE FROM FIREBASE AND SEND TO BACKEND
+    try {
+      const firebaseDelete = await deleteImage(url);
+
+      if (firebaseDelete) {
+        await axios.post("/delete-ad", { _id: item._id });
         dispatch({ type: "DELETE_AD_SUCCESS", payload: item.title });
         setTimeout(() => {
           dispatch({ type: "CLEAR_MESSAGE" });
         }, 2000);
-      })
-      .catch((err) => {
-        console.log(err);
-        dispatch({ type: "DELETE_AD_ERROR" });
-        setTimeout(() => {
-          dispatch({ type: "CLEAR_MESSAGE" });
-        }, 2000);
-      });
+      } else {
+        throw new Error("Error");
+      }
+    } catch (err) {
+      console.log(err);
+      dispatch({ type: "DELETE_AD_ERROR" });
+      setTimeout(() => {
+        dispatch({ type: "CLEAR_MESSAGE" });
+      }, 2000);
+    }
   };
 };

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { motion } from "framer-motion";
 import { heroVariants } from "../config/motion";
-import awAds from "../images/aw-ads.svg";
+import brand from "../images/brand.png";
 import couple from "../images/couple.svg";
 import { Row, Col } from "antd";
 import AdsSummary from "../components/ads/AdsSummary";
@@ -55,8 +55,8 @@ const Home = (props) => {
                   animate="visible"
                   exit="exit"
                   className={classes.brand}
-                  src={awAds}
-                  alt="brand name"
+                  src={brand}
+                  alt="brand"
                 />
                 <img className={classes.hero} src={couple} alt="couple" />
               </div>

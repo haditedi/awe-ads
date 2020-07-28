@@ -1,25 +1,27 @@
 .heroContainer {
   min-height: 40vw;
   background-color: #dddddd;
-  text-align: center;
+
   position: relative;
+  margin: auto;
 }
 
 .hero {
   width: 80vw;
 }
 .brand {
-  width: 15vw;
+  width: 18vw;
 
   position: absolute;
-  top: 3vw;
-  left: 5vw;
+  top: 0.7vw;
+  left: 2vw;
 }
 
 @media (min-width: 600px) {
   .heroContainer {
     min-height: 350px;
     max-height: 450px;
+    max-width: 800px;
     background-color: #dddddd;
   }
   .hero {
