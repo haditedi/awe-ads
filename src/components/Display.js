@@ -4,7 +4,7 @@ import { Layout, Menu } from "antd";
 import { connect } from "react-redux";
 import { MenuUnfoldOutlined, UserOutlined } from "@ant-design/icons";
 import { Avatar } from "antd";
-import logo from "../images/logo.svg";
+import newlogo from "../images/newlogo.svg";
 
 const { Header, Content, Footer } = Layout;
 
@@ -23,7 +23,7 @@ const Display = ({ children, location, isAuth, name }) => {
         <Menu.Item>
           <img
             style={{ width: "50px", display: "inline" }}
-            src={logo}
+            src={newlogo}
             alt="logo"
           />
         </Menu.Item>
@@ -68,7 +68,7 @@ const Display = ({ children, location, isAuth, name }) => {
                 display: "inline",
                 textTransform: "rotate(22deg)",
               }}
-              src={logo}
+              src={newlogo}
               alt="logo"
             />
           </NavLink>
