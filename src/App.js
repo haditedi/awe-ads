@@ -6,6 +6,7 @@ import Contact from "./pages/Contact";
 import Account from "./pages/Account";
 import Profile from "./pages/Profile";
 import AdDetail from "./pages/AdDetail";
+import Logout from "./pages/Logout";
 import ViewCategory from "./pages/ViewCategory";
 import Search from "./pages/Search";
 import { connect } from "react-redux";
@@ -41,6 +42,7 @@ function App(props) {
         <Route path="/search" component={Search} />
         <Route path="/view-category/:category" component={ViewCategory} />
         <Route path="/ad-detail/:id" component={AdDetail} />
+        <Route path="/logout" component={Logout} />
         <Route path="/" component={Home} />
       </Switch>
     );
@@ -53,6 +55,7 @@ function App(props) {
         <Route path="/search" component={Search} />
         <Route path="/view-category/:category" component={ViewCategory} />
         <Route path="/ad-detail/:id" component={AdDetail} />
+        <Route path="/logout" component={Logout} />
         <Route path="/" component={Home} />
       </Switch>
     );

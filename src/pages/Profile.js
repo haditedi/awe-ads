@@ -55,6 +55,7 @@ const Profile = ({
               empty: true,
               loading: false,
               postAds: false,
+              data: [],
             };
           });
         } else {

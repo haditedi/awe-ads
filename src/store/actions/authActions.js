@@ -1,5 +1,32 @@
 import axios from "axios";
 
+export const googleSignIn = (history) => {
+  return (dispatch, getState, { getFirebase }) => {
+    const firebase = getFirebase();
+
+    firebase
+      .login({
+        provider: "google",
+        type: "popup",
+      })
+      .then(() => {
+        dispatch({
+          type: "LOGIN_SUCCESS",
+        });
+        history.push("/profile");
+      })
+      .catch((err) => {
+        dispatch({
+          type: "LOGIN_ERROR",
+          err,
+        });
+        setTimeout(() => {
+          dispatch({ type: "CLEAR_ERROR" });
+        }, 2000);
+      });
+  };
+};
+
 export const signIn = (credentials, history) => {
   console.log(history);
   return (dispatch, getState, { getFirebase }) => {
@@ -21,7 +48,7 @@ export const signIn = (credentials, history) => {
         });
         setTimeout(() => {
           dispatch({ type: "CLEAR_ERROR" });
-        }, 3000);
+        }, 2000);
       });
   };
 };
@@ -61,7 +88,7 @@ export const signUp = (credentials, history) => {
   };
 };
 
-export const signOut = (history) => {
+export const signOut = () => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
     firebase
@@ -70,7 +97,6 @@ export const signOut = (history) => {
       .then(() => {
         console.log("Log out");
         dispatch({ type: "SIGN_OUT" });
-        history.push("/");
       });
   };
 };

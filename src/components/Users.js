@@ -10,7 +10,7 @@ const Users = () => {
     setShow(!show);
   };
   return (
-    <Row style={{ marginTop: "15vh" }} justify="center">
+    <Row style={{ marginTop: "10vh" }} justify="center">
       <Col className="tilt">
         {show ? (
           <SignUp handleClick={handleClick} />

@@ -2,17 +2,13 @@ import React from "react";
 import { NavLink, withRouter } from "react-router-dom";
 import { Layout, Menu } from "antd";
 import { connect } from "react-redux";
-import { signOut } from "../store/actions/authActions";
 import { MenuUnfoldOutlined, UserOutlined } from "@ant-design/icons";
 import { Avatar } from "antd";
 import logo from "../images/logo.svg";
 
 const { Header, Content, Footer } = Layout;
 
-const Display = ({ children, location, history, isAuth, logout, name }) => {
-  const handleLogout = () => {
-    logout(history);
-  };
+const Display = ({ children, location, isAuth, name }) => {
   let routes;
   if (isAuth) {
     routes = (
@@ -51,9 +47,7 @@ const Display = ({ children, location, history, isAuth, logout, name }) => {
         </Menu.Item>
 
         <Menu.Item key="/logout">
-          <NavLink onClick={handleLogout} to="/">
-            Log Out
-          </NavLink>
+          <NavLink to="/logout">Log Out</NavLink>
         </Menu.Item>
       </Menu>
     );
@@ -132,13 +126,5 @@ const mapStateToProps = (state) => {
     name: state.auth.name || state.firebase.auth.displayName,
   };
 };
-const mapDispatchToProps = (dispatch) => {
-  return {
-    logout: (history) => dispatch(signOut(history)),
-  };
-};
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withRouter(Display));
+export default connect(mapStateToProps)(withRouter(Display));
