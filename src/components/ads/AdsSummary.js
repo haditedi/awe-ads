@@ -35,7 +35,13 @@ const AdsSummary = ({ state, uid, deleteAd, editAd }) => {
                 <Card
                   style={{ width: 240, height: 350 }}
                   hoverable
-                  cover={<img alt={el.alt} src={src} />}
+                  cover={
+                    <img
+                      style={{ height: "100%", maxHeight: 200, width: "100%" }}
+                      alt={el.alt}
+                      src={src}
+                    />
+                  }
                 >
                   <Meta
                     title={<CardTitle title={el.title} />}

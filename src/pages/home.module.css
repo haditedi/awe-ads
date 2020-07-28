@@ -11,7 +11,7 @@
 }
 .brand {
   width: 18vw;
-
+  max-width: 180px;
   position: absolute;
   top: 1.2vw;
   left: 2.5vw;
