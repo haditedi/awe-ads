@@ -33,7 +33,6 @@ const PostAds = ({
               <Option value="car">Car</Option>
               <Option value="others">Other Stuffs</Option>
             </Select>
-
             <Input
               style={style}
               name="title"
@@ -47,7 +46,6 @@ const PostAds = ({
                 Maximum 20 letters. {numLetter} left.
               </div>
             )}
-
             <TextArea
               style={style}
               placeholder="Description"
@@ -57,15 +55,11 @@ const PostAds = ({
               rows={5}
               required
             />
-
+            £{" "}
             <InputNumber
               min={0}
               style={style}
               defaultValue={0}
-              formatter={(value) =>
-                `£ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-              }
-              parser={(value) => value.replace(/\£\s?|(,*)/g, "")}
               onChange={handleNumber}
             />
             <Input
@@ -95,7 +89,6 @@ const PostAds = ({
               multiple
               onChange={handleFiles}
             />
-
             {state.tmpUrl &&
               state.tmpUrl.map((el) => {
                 return (
@@ -114,11 +107,9 @@ const PostAds = ({
                   </div>
                 );
               })}
-
             {state.error && (
               <ErrorAlert style={{ marginTop: "20px" }} error={state.error} />
             )}
-
             {state.loading ? (
               <Spin style={{ marginTop: "20px" }} />
             ) : (

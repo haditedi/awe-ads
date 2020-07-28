@@ -22,7 +22,7 @@ const Display = ({ children, location, isAuth, name }) => {
       >
         <Menu.Item>
           <img
-            style={{ width: "60px", display: "inline" }}
+            style={{ width: "50px", display: "inline" }}
             src={logo}
             alt="logo"
           />
@@ -64,7 +64,7 @@ const Display = ({ children, location, isAuth, name }) => {
             {" "}
             <img
               style={{
-                width: "60px",
+                width: "50px",
                 display: "inline",
                 textTransform: "rotate(22deg)",
               }}

@@ -64,10 +64,6 @@ const EditAds = ({
               min={0}
               style={style}
               defaultValue={state.price}
-              formatter={(value) =>
-                `£ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-              }
-              parser={(value) => value.replace(/\£\s?|(,*)/g, "")}
               onChange={handleNumber}
             />
             <Input

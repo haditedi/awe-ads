@@ -123,10 +123,13 @@ const Profile = ({
   };
 
   const handleNumber = (e) => {
+    console.log(e);
+    let number = parseInt(e, 10);
+
     setState((prevState) => {
       return {
         ...prevState,
-        price: e,
+        price: number,
       };
     });
   };
