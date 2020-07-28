@@ -1,6 +1,7 @@
 import React from "react";
 import Display from "../components/Display";
 import HeadingText from "../components/HeadingText";
+import SEO from "../components/SEO";
 import { Row, Col } from "antd";
 import newborn from "../images/newborn.jpg";
 import { heroVariants } from "../config/motion";
@@ -9,6 +10,10 @@ import { motion } from "framer-motion";
 const About = () => {
   return (
     <Display>
+      <SEO
+        title="Awe ads | About page"
+        description="Founded in July 2020. We aim to be one of the best ads posting provider"
+      />
       <motion.div
         variants={heroVariants}
         initial="hidden"

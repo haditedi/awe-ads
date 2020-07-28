@@ -10,6 +10,7 @@ import Display from "../components/Display";
 import HeadingText from "../components/HeadingText";
 import Category from "../components/Category";
 import SearchBar from "../components/SearchBar";
+import SEO from "../components/SEO";
 import axios from "axios";
 import classes from "./home.module.css";
 
@@ -39,6 +40,10 @@ const Home = (props) => {
 
   return (
     <Display>
+      <SEO
+        title="Awe ads | Home page"
+        description="free ads posting for london and surrounding area until edinburgh. The whole united kingdom."
+      />
       <div>
         <motion.section
           variants={heroVariants}

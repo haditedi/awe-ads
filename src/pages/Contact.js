@@ -6,6 +6,7 @@ import { MailOutlined, UserOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { heroVariants } from "../config/motion";
+import SEO from "../components/SEO";
 
 const style = {
   marginBottom: "20px",
@@ -84,6 +85,10 @@ const Contact = () => {
 
   return (
     <Display>
+      <SEO
+        title="Awe ads | Contact page"
+        description="contact us using the form provided here"
+      />
       <motion.div
         variants={heroVariants}
         initial="hidden"
