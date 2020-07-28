@@ -18,7 +18,7 @@ const SearchBar = ({ history }) => {
             size="large"
             placeholder="input search text"
             onSearch={(value) => handleSearch(value)}
-            style={{ width: 300 }}
+            style={{ width: "100%" }}
           />
         </Col>
       </Row>
