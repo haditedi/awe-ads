@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Display from "../components/Display";
 import { connect } from "react-redux";
-import { Row, Col, Result, Button } from "antd";
+import { Row, Col, Result, Button, Skeleton } from "antd";
 import PostAds from "../components/ads/PostAds";
 import AdsSummary from "../components/ads/AdsSummary";
 import EditAds from "../components/ads/EditAds";
@@ -323,6 +323,7 @@ const Profile = ({
             </h1>
           </Col>
         </Row>
+        {state.loading && <Skeleton active />}
         <Row>
           <Col>
             <Button
