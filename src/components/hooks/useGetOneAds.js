@@ -1,30 +1,29 @@
 import axios from "axios";
-import {useEffect} from "React"
-import { useQuery } from "react-query";
+import { useState, useEffect } from "react";
 
 const useGetOneAds = (adsId) => {
- 
+  const [data,setData] = useState({})
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
+  
   useEffect(() => {
-    axios.get(`/get-one-ads/${adsId}`)
-    .then(resp => {
-      return resp.data.data.result
-    })
-  },[])
+    ( async() => {
+      try {
+        let result = await axios.get(`/get-one-ads/${adsId}`)
+        result = result.data.data.result[0]
+        console.log(result)
+        setData(result)
 
+      } catch(err){
+        setError(true)
+      } finally {
+        setLoading(false)
+      }
+    })()
+  },[adsId])
 
+  return { data, loading, error}
 }
 export default useGetOneAds;
 
 
-
-
-// const getAds = async () => {
-//   const response = await axios.get(`/get-one-ads/${adsId}`);
-//   console.log(response.data.data.result[0]);
-//   return response.data.data.result[0];
-// };
-
-// const { data, status } = useQuery("getOneAds", getAds);
-
-// return { data, status };
-// }

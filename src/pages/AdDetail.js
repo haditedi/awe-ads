@@ -12,21 +12,21 @@ const { Meta } = Card;
 
 const AdsDetail = (props) => {
   const adsId = props.match.params;
-
-  const { status, data: state } = useGetOneAds(adsId.id);
-  console.log(state);
-
+  console.log(props)
+  
+  const { data:state, loading, error } = useGetOneAds(adsId.id);
+ 
   const goBack = () => {
     props.history.goBack();
   };
 
   return (
     <Display>
-      {status === "loading" && <Skeleton />}
-      {status === "error" && (
+      {loading && <Skeleton />}
+      {error && (
         <Result status="warning" title="Sorry something went wrong,,," />
       )}
-      {status === "success" && (
+      {!loading && (
         <motion.div
           variants={heroVariants}
           initial="hidden"
