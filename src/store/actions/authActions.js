@@ -9,7 +9,14 @@ export const googleSignIn = (history) => {
         provider: "google",
         type: "popup",
       })
-      .then(() => {
+      .then((res) => {
+        console.log(res);
+        const data = {
+          name: res.user.displayName,
+          email: res.user.email,
+          userId: res.user.uid,
+        };
+        axios.post("/google-sign-in", data);
         dispatch({
           type: "LOGIN_SUCCESS",
         });

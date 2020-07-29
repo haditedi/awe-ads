@@ -13,7 +13,7 @@ const SearchBar = ({ history }) => {
   return (
     <section style={{ marginTop: "40px" }}>
       <Row justify="center">
-        <Col span={16}>
+        <Col xs={24} sm={16} lg={14} xl={10}>
           <Search
             size="large"
             placeholder="input search text"
