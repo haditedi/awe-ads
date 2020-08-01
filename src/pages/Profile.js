@@ -336,6 +336,7 @@ const Profile = ({
             </Button>
           </Col>
         </Row>
+
         <AnimatePresence>
           {message && (
             <motion.div

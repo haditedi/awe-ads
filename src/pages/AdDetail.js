@@ -6,16 +6,17 @@ import { Row, Col, Card, Skeleton, Result, Button } from "antd";
 import { LeftOutlined } from "@ant-design/icons";
 import { motion } from "framer-motion";
 import { heroVariants } from "../config/motion";
-import useGetOneAds from "../components/hooks/useGetOneAds";
+import useGet from "../components/hooks/useGet";
 
 const { Meta } = Card;
 
 const AdsDetail = (props) => {
   const adsId = props.match.params;
-  console.log(props)
-  
-  const { data:state, loading, error } = useGetOneAds(adsId.id);
- 
+  const url = "/get-one-ads";
+  //console.log(props);
+
+  const { data: state, loading, error } = useGet(url, adsId.id);
+
   const goBack = () => {
     props.history.goBack();
   };

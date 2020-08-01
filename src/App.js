@@ -9,6 +9,7 @@ import AdDetail from "./pages/AdDetail";
 import Logout from "./pages/Logout";
 import ViewCategory from "./pages/ViewCategory";
 import Search from "./pages/Search";
+import Message from "./pages/Message";
 import { connect } from "react-redux";
 
 import firebase from "./config/fbConfig";
@@ -40,6 +41,7 @@ function App(props) {
         <Route path="/contact" component={Contact} />
         <Route path="/profile" component={Profile} />
         <Route path="/search" component={Search} />
+        <Route path="/message" component={Message} />
         <Route path="/view-category/:category" component={ViewCategory} />
         <Route path="/ad-detail/:id" component={AdDetail} />
         <Route path="/logout" component={Logout} />

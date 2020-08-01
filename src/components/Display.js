@@ -1,9 +1,8 @@
 import React from "react";
-import { NavLink, withRouter } from "react-router-dom";
-import { Layout, Menu } from "antd";
+import { NavLink, withRouter, Link } from "react-router-dom";
+import { Layout, Menu, Avatar, Dropdown } from "antd";
 import { connect } from "react-redux";
 import { MenuUnfoldOutlined, UserOutlined } from "@ant-design/icons";
-import { Avatar } from "antd";
 import newlogo from "../images/newlogo.svg";
 
 const { Header, Content, Footer } = Layout;
@@ -40,10 +39,24 @@ const Display = ({ children, location, isAuth, name }) => {
         </Menu.Item>
 
         <Menu.Item key="/profile">
-          <NavLink to="/profile">
-            <Avatar style={{ marginRight: "5px" }} icon={<UserOutlined />} />{" "}
-            <span style={{ textTransform: "capitalize" }}>{name}</span>
-          </NavLink>
+          <Dropdown
+            overlay={
+              <Menu>
+                <Menu.Item>
+                  <NavLink to="/profile">Ads</NavLink>
+                </Menu.Item>
+                <Menu.Item>
+                  <NavLink to="/message">Message</NavLink>
+                </Menu.Item>
+              </Menu>
+            }
+          >
+            <Link to="#" onClick={(e) => e.preventDefault()}>
+              {" "}
+              <Avatar style={{ marginRight: "5px" }} icon={<UserOutlined />} />
+              <span style={{ textTransform: "capitalize" }}> {name}</span>
+            </Link>
+          </Dropdown>
         </Menu.Item>
 
         <Menu.Item key="/logout">
