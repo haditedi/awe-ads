@@ -28,7 +28,7 @@ function App(props) {
       });
   }
 
-  axios.defaults.baseURL = "https://dazzling-zion-41313.herokuapp.com";
+  axios.defaults.baseURL = "https://awe-ads.herokuapp.com";
   // axios.defaults.baseURL = "http://localhost:5000";
   axios.defaults.headers.common["Authorization"] = token;
 
