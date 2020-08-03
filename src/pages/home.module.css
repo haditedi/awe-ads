@@ -10,11 +10,12 @@
   width: 80vw;
 }
 .brand {
-  width: 18vw;
+  width: 25vw;
+  height: 15vw;
   max-width: 180px;
   position: absolute;
-  top: 1.2vw;
-  left: 2.5vw;
+  top:-.75vw;
+  left: 3vw;
 }
 
 @media (min-width: 600px) {

@@ -12,3 +12,15 @@ export const heroVariants = {
     opacity: 0,
   },
 };
+
+export const svgVariants = {
+  initial : {
+    x:-300,
+    opacity:0
+  },
+  visible: {
+    x:0,
+    opacity: 1,
+    transition: {duration:1.5}
+  }
+}
