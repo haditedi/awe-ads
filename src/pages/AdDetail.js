@@ -13,7 +13,8 @@ const { Meta } = Card;
 const AdsDetail = (props) => {
   const adsId = props.match.params;
   const url = "/get-one-ads";
-  //console.log(props);
+  console.log(window.location.hash)
+ // console.log(props.history.goBack(adsId.id));
 
   const { data: state, loading, error } = useGet(url, adsId.id);
 

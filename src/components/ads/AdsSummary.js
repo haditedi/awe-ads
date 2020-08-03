@@ -29,9 +29,10 @@ const AdsSummary = ({ state, uid, deleteAd, editAd }) => {
           }
 
           return (
-            <Col key={el._id}>
+            <Col id={el._id} key={el._id}>
               {" "}
               <Link to={`/ad-detail/${el._id}`}>
+              
                 <Card
                   style={{ width: 240, height: 350 }}
                   hoverable
@@ -54,6 +55,7 @@ const AdsSummary = ({ state, uid, deleteAd, editAd }) => {
                     }
                   />
                 </Card>
+               
               </Link>
               {uid === el.userId && (
                 <div>
