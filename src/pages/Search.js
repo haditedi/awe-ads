@@ -3,6 +3,7 @@ import Display from "../components/Display";
 import HeadingText from "../components/HeadingText";
 import SearchBar from "../components/SearchBar";
 import AdsSummary from "../components/ads/AdsSummary";
+import Paginate from "../components/Paginate";
 import { Skeleton, Result } from "antd";
 import axios from "axios";
 import { motion } from "framer-motion";
@@ -14,12 +15,13 @@ const Search = ({ location, history }) => {
     empty: false,
     loading: true,
     localError: false,
+    length: 0,
+    page: 1,
   });
-
+  console.log(state);
   useEffect(() => {
-    console.log("EFFECT");
     axios
-      .get(`/search-ads${location.search}`)
+      .get(`/search-ads${location.search}&page=${state.page}`)
       .then((res) => {
         const result = res.data.data.result;
         console.log(result);
@@ -29,6 +31,7 @@ const Search = ({ location, history }) => {
               ...prevValue,
               loading: false,
               data: result,
+              length: res.data.data.length,
             };
           });
         } else {
@@ -50,7 +53,17 @@ const Search = ({ location, history }) => {
           };
         });
       });
-  }, [location.search]);
+  }, [location.search, state.page]);
+
+  const changePage = (e) => {
+    console.log(e);
+    setState((prevValue) => {
+      return {
+        ...prevValue,
+        page: e,
+      };
+    });
+  };
 
   return (
     <Display>
@@ -69,6 +82,10 @@ const Search = ({ location, history }) => {
           <Result status="warning" title={state.localError} />
         )}
         <AdsSummary state={state} />
+
+        {state.length >= 20 && (
+          <Paginate changePage={changePage} state={state} />
+        )}
       </motion.div>
     </Display>
   );
