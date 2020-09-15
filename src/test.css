@@ -1,0 +1,39 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html,
+body {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+.wrapper {
+  width: 100px;
+  height: 100px;
+  text-align: center;
+  padding-top: 30px;
+  background: orange;
+  border-radius: 50%;
+  color: blue;
+  margin: 0 auto;
+  transition: 2s;
+  /* animation-name: round;
+  animation-duration: 5s;
+  animation-iteration-count: infinite; */
+}
+.wrapper:hover {
+  background: black;
+}
+
+@keyframes round {
+  from {
+    opacity: 0;
+    transform: translateY(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-700px);
+  }
+}

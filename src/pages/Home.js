@@ -4,6 +4,7 @@ import { Row, Col } from "antd";
 import { motion } from "framer-motion";
 import { heroVariants, svgVariants } from "../config/motion";
 import couple from "../images/couple.svg";
+import video from "../video/market.mp4";
 import Paginate from "../components/Paginate";
 import AdsSummary from "../components/ads/AdsSummary";
 import Display from "../components/Display";
@@ -94,9 +95,19 @@ const Home = (props) => {
             </Col>
           </Row>
         </motion.section>
+        <section className={classes.container}>
+          <video autoPlay muted loop className={classes.video}>
+            <source src={video} type="video/mp4"></source>
+          </video>
+          <div className={classes.htext}>
+            <h1>AWE ADS</h1>
+            <p>Free ads posting</p>
+          </div>
+        </section>
 
         <SearchBar history={props.history} />
         <HeadingText text="Category" />
+
         <Category state={state} />
 
         <HeadingText text="Latest Post" />

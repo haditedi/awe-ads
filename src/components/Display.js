@@ -104,8 +104,18 @@ const Display = ({ children, location, isAuth, name }) => {
     );
   }
   return (
-    <Layout className="layout" style={{ minHeight: "100vh" }}>
-      <Header style={{ position: "fixed", zIndex: 1, width: "100%" }}>
+    <Layout
+      className="layout"
+      style={{ minHeight: "100vh", maxWidth: "1500px" }}
+    >
+      <Header
+        style={{
+          position: "fixed",
+          zIndex: 1,
+          width: "100%",
+          maxWidth: "1500px",
+        }}
+      >
         {routes}
       </Header>
       <Content
